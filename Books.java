@@ -6,6 +6,7 @@ public class Books {
     private String genre;
     private double width;
     private double height;
+    private int yearofpublication;
 
     public Books(String name, int copies, int pages, double width, double height) {
         this.name = name;
@@ -19,8 +20,13 @@ public class Books {
         copies--;
     }
 
-    public void additionalInformation(String genre) {
+    public void addCopies(int copies) {
+        this.copies += copies;
+    }
+
+    public void additionalInformation(String genre, int yearofpublication) {
         this.genre = genre;
+        this.yearofpublication = yearofpublication;
     }
 
     public String getName() {
