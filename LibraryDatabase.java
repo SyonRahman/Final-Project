@@ -1,30 +1,58 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class LibraryDatabase {
 
-    private ArrayList<String> usernames = new ArrayList<String>();
-    private ArrayList<Integer> ids = new ArrayList<Integer>();
-    private boolean admin;
     private ArrayList<Admin> admins = new ArrayList<Admin>();
     private ArrayList<User> users = new ArrayList<User>();
 
-    public void createAccount(String username, boolean isAdmin) {
+    public boolean createAccount(String username, boolean isAdmin) {
         if (isAdmin) {
-            Admin admin = new Admin(username, ids.size());
-            admins.add(admin);
+            if (isUsernamevalid(username, isAdmin)) {
+                Admin admin = new Admin(username, generateid());
+                admins.add(admin);
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            User user = new User(username, ids.size());
-            users.add(user);
-        }
-    }
-
-    public boolean isUsernamevalid(String username) {
-        for (int i = 0; i < usernames.size(); i++) {
-            if (usernames.get(i).equals(username)) {
+            if (isUsernamevalid(username, isAdmin)) {
+                User user = new User(username, generateid());
+                users.add(user);
+                return true;
+            } else {
                 return false;
             }
         }
+    }
+
+    public boolean isUsernamevalid(String username, boolean isAdmin) {
+        if (isAdmin) {
+            for (Admin admin : admins) {
+                if (admin.getUsername().equals(username)) {
+                    return false;
+                }
+            }
+        } else {
+            for (User user : users) {
+                if (user.getUsername().equals(username)) {
+                    return false;
+                }
+            }
+        }
         return true;
+    }
+
+    public int generateid() {
+        return (int)(Math.random() * 900000000 + 100000000);
+    }
+
+    public ArrayList<Admin> getAdmins() {
+        return admins;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
 }
