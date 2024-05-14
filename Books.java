@@ -15,7 +15,6 @@ public class Books {
         this.width = width;
         this.height = height;
     }
-
     public void changeCopies() {
         copies--;
     }

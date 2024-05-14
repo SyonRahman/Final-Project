@@ -6,23 +6,13 @@ public class LibraryDatabase {
     private ArrayList<Admin> admins = new ArrayList<Admin>();
     private ArrayList<User> users = new ArrayList<User>();
 
-    public boolean createAccount(String username, boolean isAdmin) {
+    public void createAccount(String username, boolean isAdmin) {
         if (isAdmin) {
-            if (isUsernamevalid(username, isAdmin)) {
-                Admin admin = new Admin(username, generateid());
-                admins.add(admin);
-                return true;
-            } else {
-                return false;
-            }
+            Admin admin = new Admin(username, generateid());
+            admins.add(admin);
         } else {
-            if (isUsernamevalid(username, isAdmin)) {
-                User user = new User(username, generateid());
-                users.add(user);
-                return true;
-            } else {
-                return false;
-            }
+            User user = new User(username, generateid());
+            users.add(user);
         }
     }
 
@@ -41,6 +31,23 @@ public class LibraryDatabase {
             }
         }
         return true;
+    }
+
+    public boolean IDandUsermatch(String user, int id, boolean isAdmin) {
+        if (isAdmin) {
+            for (int i = 0; i < admins.size(); i++) {
+                if (admins.get(i).getUsername().equals(user) && admins.get(i).getLibraryid() == id) {
+                    return true;
+                }
+            }
+        } else {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUsername().equals(user) && users.get(i).getLibraryId() == id) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public int generateid() {
