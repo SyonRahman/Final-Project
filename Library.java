@@ -112,12 +112,10 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         JOptionPane.showMessageDialog(null, "Admin account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
                     } else {
-                        for (int i = 0; i < database.getUsers().size(); i++) {
-                            if (database.getUsers().get(i).getUsername().equals(username.getText())) {
-                                JOptionPane.showMessageDialog(null, "Username already exists");
-                                return;
-                            }
-                        }
+                        if (database.createAccount(username.getText(), false) == false) {
+                            JOptionPane.showMessageDialog(null, "Username already exists");
+                            return;
+                        };
                         database.createAccount(username.getText(), false);
                         JOptionPane.showMessageDialog(null, "User account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
