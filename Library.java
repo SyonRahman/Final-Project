@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class Library extends JFrame implements ActionListener, KeyListener {
 
@@ -50,8 +51,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         signup.setFont(new Font("Comic Sans", Font.BOLD, 15));
         login.setBackground(Color.BLUE);
         signup.setBackground(Color.RED);
-        login.addActionListener(this);
-        signup.addActionListener(this);
+        login.addActionListener(e -> logAccount());
+        signup.addActionListener(e -> createAccount());
         titlescreen.add(login);
         titlescreen.add(signup);
     }
@@ -67,41 +68,63 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         AccountCreator.setVisible(true);
         AccountCreator.setBackground(Color.RED);
 
-        boolean isAdmin = false;
+        AccountCreator.setLayout(null);
+
+        final boolean[] isAdmin = {false};
         JButton admin = new JButton("Admin");
         JButton user = new JButton("User");
-        admin.setBounds(100, 100, 50, 50);
-        user.setBounds(150, 100, 50, 50);
+        admin.setBounds(250, 200, 100, 100);
+        user.setBounds(1250, 200, 100, 100);
         admin.setFont(new Font("Times New Roman", Font.BOLD, 20));
         user.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        admin.setHorizontalAlignment(SwingConstants.CENTER);
+        user.setHorizontalAlignment(SwingConstants.CENTER);
+        admin.addActionListener(e -> isAdmin[0] = true);
+        user.addActionListener(e -> isAdmin[0] = false);
         admin.setBackground(Color.BLUE);
         user.setBackground(Color.BLUE);
+        admin.setForeground(Color.WHITE);
+        user.setForeground(Color.WHITE);
+        admin.setBorder(new LineBorder(Color.BLACK));
+        user.setBorder(new LineBorder(Color.BLACK));
+
 
         AccountCreator.add(admin);
         AccountCreator.add(user);
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameLabel.setBounds(200, 200, 50, 50);
+        usernameLabel.setBounds(600, 250, 300, 150);
+        usernameLabel.setBorder(new LineBorder(Color.BLACK));
+        usernameLabel.setFont(new Font("Times New Roman", Font.BOLD, 50));
         usernameLabel.setForeground(Color.BLUE);
         AccountCreator.add(usernameLabel);
 
         JTextField username = new JTextField();
-        username.setBounds(400, 400, 150, 75);
+        username.setBounds(400, 400, 750, 75);
         username.setHorizontalAlignment(SwingConstants.CENTER);
         username.setBackground(Color.BLUE);
+        username.setForeground(Color.BLACK);
+        username.setBorder(new LineBorder(Color.BLACK));
+        username.setFont(new Font("Times New Roman", Font.BOLD, 20));
         AccountCreator.add(username);
 
         JButton SignUp = new JButton("Sign Up");
         SignUp.setFont(new Font("Times New Roman", Font.BOLD, 50));
         SignUp.setBackground(Color.GREEN);
         SignUp.setForeground(Color.YELLOW);
+        SignUp.setBounds(600, 600, 300, 75);
+        SignUp.setBorder(new LineBorder(Color.BLACK));
         SignUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == SignUp) {
-                    if (isAdmin) {
-                        if (database.isUsernamevalid(username.getText(), true) == false) {
+                    if (username.getText().length() < 5) {
+                        JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
+                        return;
+                    }
+                    if (isAdmin[0]) {
+                        if (!database.isUsernamevalid(username.getText(), true)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
                             return;
                         }
@@ -110,10 +133,10 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                                 "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
                         logAccount();
                     } else {
-                        if (database.isUsernamevalid(username.getText(), false) == false) {
+                        if (!database.isUsernamevalid(username.getText(), false)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
                             return;
-                        };
+                        }
                         database.createAccount(username.getText(), false);
                         JOptionPane.showMessageDialog(null, "User account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
@@ -124,33 +147,68 @@ public class Library extends JFrame implements ActionListener, KeyListener {
             }
         });
         AccountCreator.add(SignUp);
-
-
     }
 
     public void logAccount() {
         LogIn.setBackground(Color.BLUE);
         LogIn.setVisible(true);
+        LogIn.setSize(1500, 1500);
+        LogIn.setLocationRelativeTo(null);
+        LogIn.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        LogIn.setResizable(false);
+
+        LogIn.setLayout(null);
+
+
+        final boolean[] isAdmin = {false};
+        JButton admin = new JButton("Admin");
+        JButton user = new JButton("User");
+        admin.setBounds(250, 200, 100, 100);
+        user.setBounds(1250, 200, 100, 100);
+        admin.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        user.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        admin.setHorizontalAlignment(SwingConstants.CENTER);
+        user.setHorizontalAlignment(SwingConstants.CENTER);
+        admin.addActionListener(e -> isAdmin[0] = true);
+        user.addActionListener(e -> isAdmin[0] = false);
+        admin.setBackground(Color.BLUE);
+        user.setBackground(Color.BLUE);
+        admin.setForeground(Color.WHITE);
+        user.setForeground(Color.WHITE);
+        admin.setBorder(new LineBorder(Color.BLACK));
+        user.setBorder(new LineBorder(Color.BLACK));
+
+        JLabel label = new JLabel("Log In");
+        label.setBounds(600, 100, 300, 150);
+        label.setFont(new Font("Times New Roman", Font.BOLD, 50));
+        label.setForeground(Color.BLUE);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        LogIn.add(label);
 
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameLabel.setBounds(200, 200, 50, 50);
-        usernameLabel.setBackground(Color.BLUE.brighter());
+        usernameLabel.setBounds(600, 350, 150, 150);
+        usernameLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
+        usernameLabel.setForeground(Color.BLUE);
+        usernameLabel.setBorder(new LineBorder(Color.BLACK));
+        usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         LogIn.add(usernameLabel);
 
 
         JTextField username = new JTextField();
-        username.setBounds(300, 300, 150, 75);
+        username.setBounds(500, 500, 500, 150);
         username.setHorizontalAlignment(SwingConstants.CENTER);
         username.setBackground(Color.BLUE.brighter());
+        username.setForeground(Color.GREEN);
         LogIn.add(username);
 
 
         JLabel idLabel = new JLabel("ID:");
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        idLabel.setBounds(500, 500, 50, 50);
+        idLabel.setBounds(500, 750, 500, 150);
         idLabel.setBackground(Color.BLUE.brighter());
+        idLabel.setForeground(Color.GREEN);
         LogIn.add(idLabel);
 
         JTextField enterId = new JTextField();
@@ -168,20 +226,23 @@ public class Library extends JFrame implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == Login) {
-                    if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
-                        AdminMenu();
-                    } else if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), false)) {
-                        UserMenu();
+                    if (isAdmin[0]) {
+                        if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
+                            AdminMenu();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Invalid username or ID");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Invalid username or ID");
+                        if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), false)) {
+                            UserMenu();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Invalid username or ID");
+                        }
                     }
-
                 }
             }
         });
         AccountCreator.add(Login);
-
-        add(AccountCreator);
 
     }
 
