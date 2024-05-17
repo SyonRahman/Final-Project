@@ -50,6 +50,26 @@ public class LibraryDatabase {
         return false;
     }
 
+    public void modifydetails(String description, String username, int id, boolean isAdmin) {
+        if (isAdmin) {
+            for (int i = 0; i < admins.size(); i++) {
+                if (admins.get(i).getUsername().equals(username) && admins.get(i).getLibraryid() == id) {
+                    admins.get(i).setDescription(description);
+                    admins.get(i).setUsername(username);
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
+                    users.get(i).setDescription(description);
+                    users.get(i).setUsername(username);
+                    break;
+                }
+            }
+        }
+    }
+
     public int generateid() {
         return (int)(Math.random() * 900000000 + 100000000);
     }

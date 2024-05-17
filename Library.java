@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class Library extends JFrame implements ActionListener, KeyListener {
@@ -161,25 +162,18 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
 
         final boolean[] isAdmin = {false};
-        JButton admin = new JButton("Admin");
-        JButton user = new JButton("User");
-        admin.setBounds(250, 200, 100, 100);
-        user.setBounds(1250, 200, 100, 100);
-        admin.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        user.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        admin.setHorizontalAlignment(SwingConstants.CENTER);
-        user.setHorizontalAlignment(SwingConstants.CENTER);
-        admin.addActionListener(e -> isAdmin[0] = true);
+        JButton admin = new JButton("Admin"); JButton user = new JButton("User");
+        admin.setBounds(250, 100, 100, 100); user.setBounds(1250, 100, 100, 100);
+        admin.setFont(new Font("Times New Roman", Font.BOLD, 20)); user.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        admin.setHorizontalAlignment(SwingConstants.CENTER); user.setHorizontalAlignment(SwingConstants.CENTER); admin.addActionListener(e -> isAdmin[0] = true);
         user.addActionListener(e -> isAdmin[0] = false);
-        admin.setBackground(Color.BLUE);
-        user.setBackground(Color.BLUE);
-        admin.setForeground(Color.WHITE);
-        user.setForeground(Color.WHITE);
-        admin.setBorder(new LineBorder(Color.BLACK));
-        user.setBorder(new LineBorder(Color.BLACK));
+        admin.setBackground(Color.BLUE); user.setBackground(Color.BLUE);
+        admin.setForeground(Color.WHITE); user.setForeground(Color.WHITE);
+        admin.setBorder(new LineBorder(Color.BLACK)); user.setBorder(new LineBorder(Color.BLACK));
+        LogIn.add(admin); LogIn.add(user);
 
         JLabel label = new JLabel("Log In");
-        label.setBounds(600, 100, 300, 150);
+        label.setBounds(600, 50, 300, 150);
         label.setFont(new Font("Times New Roman", Font.BOLD, 50));
         label.setForeground(Color.BLUE);
         label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -188,7 +182,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameLabel.setBounds(600, 350, 150, 150);
+        usernameLabel.setBounds(600, 350, 200, 200);
         usernameLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
         usernameLabel.setForeground(Color.BLUE);
         usernameLabel.setBorder(new LineBorder(Color.BLACK));
@@ -197,31 +191,34 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
 
         JTextField username = new JTextField();
-        username.setBounds(500, 500, 500, 150);
+        username.setBounds(500, 500, 500, 75);
         username.setHorizontalAlignment(SwingConstants.CENTER);
         username.setBackground(Color.BLUE.brighter());
         username.setForeground(Color.GREEN);
+        username.setFont(new Font("Times New Roman", Font.BOLD, 20));
         LogIn.add(username);
 
 
         JLabel idLabel = new JLabel("ID:");
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        idLabel.setBounds(500, 750, 500, 150);
+        idLabel.setBounds(750, 600, 150, 75);
         idLabel.setBackground(Color.BLUE.brighter());
         idLabel.setForeground(Color.GREEN);
+        idLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
         LogIn.add(idLabel);
 
         JTextField enterId = new JTextField();
-        enterId.setBounds(600, 600, 150, 75);
+        enterId.setBounds(500, 750, 500, 75);
         enterId.setHorizontalAlignment(SwingConstants.CENTER);
         enterId.setBackground(Color.BLUE.brighter());
+        enterId.setFont(new Font("Times New Roman", Font.BOLD, 20));
         LogIn.add(enterId);
 
         JButton Login = new JButton("Login");
         Login.setFont(new Font("Times New Roman", Font.BOLD, 50));
         Login.setForeground(Color.YELLOW);
         Login.setBackground(Color.GREEN);
-        Login.setBounds(600, 750, 100, 50);
+        Login.setBounds(600, 900, 100, 50);
         Login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -257,6 +254,15 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         AdminMenu.setVisible(true);
         AdminMenu.setBackground(Color.YELLOW);
 
+        JMenuBar menu = new JMenuBar();
+        LogIn.setJMenuBar(menu);
+        JMenu options = new JMenu("Settings"); menu.add(options);
+        JMenuItem changePassword = new JMenuItem("Change Password"); options.add(changePassword);
+        JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
+        JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
+        menu.setBorderPainted(true);
+        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+
         JButton addBook = new JButton("Add Book");
         JButton removeBook = new JButton("Remove Book");
         JButton viewBooks = new JButton("View Books");
@@ -273,6 +279,15 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         UserMenu.setResizable(false);
         UserMenu.setVisible(true);
         UserMenu.setBackground(Color.YELLOW);
+
+        JMenuBar menu = new JMenuBar();
+        LogIn.setJMenuBar(menu);
+        JMenu options = new JMenu("Settings"); menu.add(options);
+        JMenuItem changePassword = new JMenuItem("Change Password"); options.add(changePassword);
+        JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
+        JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
+        menu.setBorderPainted(true);
+        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
 
         JButton viewBooks = new JButton("View Books");
         JButton borrowBook = new JButton("Borrow Book");
