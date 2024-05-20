@@ -218,7 +218,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         Login.setFont(new Font("Times New Roman", Font.BOLD, 50));
         Login.setForeground(Color.YELLOW);
         Login.setBackground(Color.GREEN);
-        Login.setBounds(600, 900, 100, 50);
+        Login.setBounds(700, 900, 200, 100);
         Login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -239,7 +239,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 }
             }
         });
-        AccountCreator.add(Login);
+        LogIn.add(Login);
 
     }
 
