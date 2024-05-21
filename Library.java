@@ -27,17 +27,16 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
     public void createComponents() {
         titlescreen.setSize(1500, 1500);
-        titlescreen.getContentPane().setBackground(Color.YELLOW);
+        titlescreen.getContentPane().setBackground(new Color(248, 184, 120));
         titlescreen.setLocationRelativeTo(null);
         titlescreen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         titlescreen.setResizable(false);
         titlescreen.setVisible(true);
-        titlescreen.setBackground(Color.YELLOW);
 
         JLabel label = new JLabel("LIBRARY APP");
         label.setFont(new Font("Comic Sans", Font.BOLD, 100));
         label.setForeground(Color.RED);
-        label.setBounds(500, 400, 100, 100);
+        label.setBounds(500, 400, 500, 75);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         titlescreen.add(label);
         JButton login = new JButton("Login");
@@ -215,25 +214,49 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         LogIn.add(enterId);
 
         JButton Login = new JButton("Login");
-        Login.setFont(new Font("Times New Roman", Font.BOLD, 50));
+        Login.setFont(new Font("Times New Roman", Font.BOLD, 40));
         Login.setForeground(Color.YELLOW);
         Login.setBackground(Color.GREEN);
-        Login.setBounds(700, 900, 200, 100);
+        Login.setBounds(700, 900, 300, 75);
         Login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == Login) {
                     if (isAdmin[0]) {
-                        if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
-                            AdminMenu();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Invalid username or ID");
+                        if (username.getText().length() < 5) {
+                            JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
+                            return;
+                        }
+                        if (idLabel.getText().length() != 9) {
+                            JOptionPane.showMessageDialog(null, "ID must be 9 characters long");
+                            return;
+                        }
+                        try {
+                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
+                                AdminMenu();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Invalid Admin username or ID");
+                            }
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "Invalid ID");
                         }
                     } else {
-                        if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), false)) {
-                            UserMenu();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Invalid username or ID");
+                        if (username.getText().length() < 5) {
+                            JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
+                            return;
+                        }
+                        if (idLabel.getText().length() != 9) {
+                            JOptionPane.showMessageDialog(null, "ID must be 9 characters long");
+                            return;
+                        }
+                        try {
+                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
+                                AdminMenu();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Invalid User username or ID");
+                            }
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "Invalid ID");
                         }
                     }
                 }
