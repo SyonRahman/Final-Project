@@ -11,7 +11,6 @@ import javax.swing.border.LineBorder;
 public class Library extends JFrame implements ActionListener, KeyListener {
 
     private JFrame titlescreen = new JFrame("Library App");
-    private JFrame AccountCreator = new JFrame("Account Creator");
     private JFrame LogIn = new JFrame("Log In");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
@@ -26,94 +25,150 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     }
 
     public void createComponents() {
-        titlescreen.setSize(1500, 1500);
-        titlescreen.getContentPane().setBackground(new Color(248, 184, 120));
+        titlescreen.setSize(800, 550);
         titlescreen.setLocationRelativeTo(null);
         titlescreen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         titlescreen.setResizable(false);
         titlescreen.setVisible(true);
 
-        JLabel label = new JLabel("LIBRARY APP");
-        label.setFont(new Font("Comic Sans", Font.BOLD, 100));
-        label.setForeground(Color.RED);
-        label.setBounds(500, 400, 500, 75);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        titlescreen.add(label);
-        JButton login = new JButton("Login");
-        JButton signup = new JButton("Sign Up");
-        login.setBounds(350, 700, 125, 100);
-        signup.setBounds(950, 700, 125, 100);
-        login.setHorizontalAlignment(SwingConstants.CENTER);
-        signup.setHorizontalAlignment(SwingConstants.CENTER);
-        login.setForeground(Color.CYAN);
-        signup.setForeground(Color.CYAN);
-        login.setFont(new Font("Comic Sans", Font.BOLD, 20));
-        signup.setFont(new Font("Comic Sans", Font.BOLD, 15));
-        login.setBackground(Color.BLUE);
-        signup.setBackground(Color.RED);
-        login.addActionListener(e -> logAccount());
-        signup.addActionListener(e -> createAccount());
-        titlescreen.add(login);
-        titlescreen.add(signup);
+        JPanel leftside = new JPanel();
+        leftside.setBackground(new Color(102, 255, 178));
+        leftside.setBounds(0, 0, 400, 550);
+        leftside.setLayout(null);
+        titlescreen.add(leftside);
+
+
+        JPanel information = new JPanel();
+        information.setBackground(Color.WHITE);
+        information.setBounds(400, 0, 400, 550);
+        information.setLayout(null);
+        titlescreen.add(information);
+
+
+        ImageIcon book = new ImageIcon("Bluebook.png");
+        Image modified = book.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+        ImageIcon newbook = new ImageIcon(modified);
+        JLabel bookimage = new JLabel(newbook);
+        bookimage.setBounds(150, 100, 100, 100);
+        leftside.add(bookimage);
+
+        JLabel BTLibrary = new JLabel("BT Library");
+        BTLibrary.setBounds(125, 200, 400, 100);
+        BTLibrary.setHorizontalAlignment(SwingConstants.LEFT);
+        BTLibrary.setFont(new Font("Calibri", Font.BOLD, 40));
+        BTLibrary.setForeground(Color.MAGENTA);
+        leftside.add(BTLibrary);
+
+        ImageIcon cartoon = new ImageIcon("CartoonBooks.png");
+        Image cartoonmodified = cartoon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+        ImageIcon newcartoon = new ImageIcon(cartoonmodified);
+        JLabel cartoonimage = new JLabel(newcartoon);
+        cartoonimage.setBounds(150, 300, 100, 100);
+        leftside.add(cartoonimage);
+
+        JButton createAccount = new JButton("Create Account");
+        createAccount.setBounds(450, 100, 300, 75);
+        createAccount.setFont(new Font("Calibri", Font.BOLD, 20));
+        createAccount.setBackground(Color.GREEN);
+        createAccount.setForeground(Color.BLACK);
+        createAccount.setBorder(new LineBorder(Color.BLACK));
+        createAccount.setHorizontalAlignment(SwingConstants.CENTER);
+        createAccount.addActionListener(e -> createAccount());
+        information.add(createAccount);
+
+        JButton LogIn = new JButton("Log In");
+        LogIn.setBounds(450, 300, 300, 75);
+        LogIn.setFont(new Font("Calibri", Font.BOLD, 20));
+        LogIn.setBackground(Color.GREEN);
+        LogIn.setForeground(Color.BLACK);
+        LogIn.setBorder(new LineBorder(Color.BLACK));
+        LogIn.setHorizontalAlignment(SwingConstants.CENTER);
+        LogIn.addActionListener(e -> logAccount());
+        information.add(LogIn);
+
+
+        titlescreen.revalidate();
+        titlescreen.repaint();
+
+
+
     }
 
     public void createAccount() {
-        titlescreen.setVisible(false);
-        AccountCreator.setSize(1500, 1500);
-        AccountCreator.setVisible(true);
-        AccountCreator.getContentPane().setBackground(Color.YELLOW);
-        AccountCreator.setLocationRelativeTo(null);
-        AccountCreator.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        AccountCreator.setResizable(false);
-        AccountCreator.setVisible(true);
-        AccountCreator.setBackground(Color.RED);
+        titlescreen.getContentPane().removeAll();
+        titlescreen.setTitle("Create Account");
+        titlescreen.setLayout(null);
 
-        AccountCreator.setLayout(null);
+        JLabel title = new JLabel("Create Library Account");
+        title.setBounds(200, 25, 400, 50);
+        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setForeground(Color.BLACK);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        titlescreen.add(title);
 
         final boolean[] isAdmin = {false};
         JButton admin = new JButton("Admin");
-        JButton user = new JButton("User");
-        admin.setBounds(250, 200, 100, 100);
-        user.setBounds(1250, 200, 100, 100);
-        admin.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        user.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        admin.setHorizontalAlignment(SwingConstants.CENTER);
-        user.setHorizontalAlignment(SwingConstants.CENTER);
         admin.addActionListener(e -> isAdmin[0] = true);
+        JButton user = new JButton("User");
         user.addActionListener(e -> isAdmin[0] = false);
-        admin.setBackground(Color.BLUE);
-        user.setBackground(Color.BLUE);
-        admin.setForeground(Color.WHITE);
-        user.setForeground(Color.WHITE);
-        admin.setBorder(new LineBorder(Color.BLACK));
-        user.setBorder(new LineBorder(Color.BLACK));
 
+        admin.setBounds(200, 75, 200, 50);
+        user.setBounds(400, 75, 200, 50);
+        admin.setForeground(Color.BLUE); user.setForeground(Color.BLUE);
+        admin.setBackground(Color.WHITE); user.setBackground(Color.WHITE);
+        admin.setFont(new Font("Calibri", Font.BOLD, 20));
+        user.setFont(new Font("Calibri", Font.BOLD, 20));
 
-        AccountCreator.add(admin);
-        AccountCreator.add(user);
+        titlescreen.add(admin);
+        titlescreen.add(user);
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameLabel.setBounds(600, 250, 300, 150);
-        usernameLabel.setBorder(new LineBorder(Color.BLACK));
-        usernameLabel.setFont(new Font("Times New Roman", Font.BOLD, 50));
+        usernameLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         usernameLabel.setForeground(Color.BLUE);
-        AccountCreator.add(usernameLabel);
+        usernameLabel.setBounds(150, 150, 100, 50);
+        titlescreen.add(usernameLabel);
 
         JTextField username = new JTextField();
-        username.setBounds(400, 400, 750, 75);
+        username.setBounds(200, 200, 400, 50);
+        username.setFont(new Font("Calibri", Font.BOLD, 20));
         username.setHorizontalAlignment(SwingConstants.CENTER);
-        username.setBackground(Color.BLUE);
         username.setForeground(Color.BLACK);
-        username.setBorder(new LineBorder(Color.BLACK));
-        username.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        AccountCreator.add(username);
+        titlescreen.add(username);
 
-        JButton SignUp = new JButton("Sign Up");
-        SignUp.setFont(new Font("Times New Roman", Font.BOLD, 50));
-        SignUp.setBackground(Color.GREEN);
-        SignUp.setForeground(Color.YELLOW);
-        SignUp.setBounds(600, 600, 300, 75);
+        JLabel firstname = new JLabel("First Name:");
+        firstname.setFont(new Font("Calibri", Font.BOLD, 20));
+        firstname.setForeground(Color.BLUE);
+        firstname.setBounds(150, 250, 100, 50);
+        titlescreen.add(firstname);
+
+        JTextField first = new JTextField();
+        first.setBounds(200, 300, 400, 50);
+        first.setFont(new Font("Calibri", Font.BOLD, 20));
+        first.setHorizontalAlignment(SwingConstants.CENTER);
+        first.setForeground(Color.BLACK);
+        titlescreen.add(first);
+
+        JLabel lastname = new JLabel("Last Name:");
+        lastname.setFont(new Font("Calibri", Font.BOLD, 20));
+        lastname.setForeground(Color.BLUE);
+        lastname.setBounds(150, 350, 100, 50);
+        titlescreen.add(lastname);
+
+        JTextField last = new JTextField();
+        last.setBounds(200, 400, 400, 50);
+        last.setFont(new Font("Calibri", Font.BOLD, 20));
+        last.setHorizontalAlignment(SwingConstants.CENTER);
+        last.setForeground(Color.BLACK);
+        titlescreen.add(last);
+
+
+        JButton SignUp = new JButton("Create Account");
+        SignUp.setFont(new Font("Calibri", Font.BOLD, 30));
+        SignUp.setBackground(Color.BLUE);
+        SignUp.setForeground(Color.WHITE);
+        SignUp.setBounds(250, 465, 300, 40);
         SignUp.setBorder(new LineBorder(Color.BLACK));
         SignUp.addActionListener(new ActionListener() {
             @Override
@@ -123,21 +178,29 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
                         return;
                     }
+                    if (first.getText().length() < 3) {
+                        JOptionPane.showMessageDialog(null, "First name must be at least 3 characters long");
+                        return;
+                    }
+                    if (last.getText().length() < 3) {
+                        JOptionPane.showMessageDialog(null, "Last name must be at least 3 characters long");
+                        return;
+                    }
                     if (isAdmin[0]) {
-                        if (!database.isUsernamevalid(username.getText(), true)) {
+                        if (database.isUsernamevalid(username.getText(), true)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
                             return;
                         }
-                        database.createAccount(username.getText(), true);
+                        database.createAccount(username.getText(), true, first.getText(), last.getText());
                         JOptionPane.showMessageDialog(null, "Admin account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
                         logAccount();
                     } else {
-                        if (!database.isUsernamevalid(username.getText(), false)) {
+                        if (database.isUsernamevalid(username.getText(), false)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
                             return;
                         }
-                        database.createAccount(username.getText(), false);
+                        database.createAccount(username.getText(), false, first.getText(), last.getText());
                         JOptionPane.showMessageDialog(null, "User account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
                         logAccount();
@@ -146,78 +209,71 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 }
             }
         });
-        AccountCreator.add(SignUp);
+        titlescreen.add(SignUp);
+
+        titlescreen.revalidate();
+        titlescreen.repaint();
     }
 
     public void logAccount() {
-        LogIn.setBackground(Color.BLUE);
-        LogIn.setVisible(true);
-        LogIn.setSize(1500, 1500);
-        LogIn.setLocationRelativeTo(null);
-        LogIn.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        LogIn.setResizable(false);
+        titlescreen.getContentPane().removeAll();
+        titlescreen.setTitle("Log In");
+        titlescreen.setLayout(null);
 
-        LogIn.setLayout(null);
-
+        JLabel title = new JLabel("Log In");
+        title.setBounds(200, 25, 400, 50);
+        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setForeground(Color.BLACK);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        titlescreen.add(title);
 
         final boolean[] isAdmin = {false};
-        JButton admin = new JButton("Admin"); JButton user = new JButton("User");
-        admin.setBounds(250, 100, 100, 100); user.setBounds(1250, 100, 100, 100);
-        admin.setFont(new Font("Times New Roman", Font.BOLD, 20)); user.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        admin.setHorizontalAlignment(SwingConstants.CENTER); user.setHorizontalAlignment(SwingConstants.CENTER); admin.addActionListener(e -> isAdmin[0] = true);
+        JButton admin = new JButton("Admin");
+        admin.addActionListener(e -> isAdmin[0] = true);
+        JButton user = new JButton("User");
         user.addActionListener(e -> isAdmin[0] = false);
-        admin.setBackground(Color.BLUE); user.setBackground(Color.BLUE);
-        admin.setForeground(Color.WHITE); user.setForeground(Color.WHITE);
-        admin.setBorder(new LineBorder(Color.BLACK)); user.setBorder(new LineBorder(Color.BLACK));
-        LogIn.add(admin); LogIn.add(user);
 
-        JLabel label = new JLabel("Log In");
-        label.setBounds(600, 50, 300, 150);
-        label.setFont(new Font("Times New Roman", Font.BOLD, 50));
-        label.setForeground(Color.BLUE);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        LogIn.add(label);
-
+        admin.setBounds(200, 75, 200, 50);
+        user.setBounds(400, 75, 200, 50);
+        admin.setForeground(Color.BLUE); user.setForeground(Color.BLUE);
+        admin.setBackground(Color.WHITE); user.setBackground(Color.WHITE);
+        admin.setFont(new Font("Calibri", Font.BOLD, 20));
+        user.setFont(new Font("Calibri", Font.BOLD, 20));
+        titlescreen.add(admin);
+        titlescreen.add(user);
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameLabel.setBounds(600, 350, 200, 200);
-        usernameLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
+        usernameLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         usernameLabel.setForeground(Color.BLUE);
-        usernameLabel.setBorder(new LineBorder(Color.BLACK));
-        usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        LogIn.add(usernameLabel);
-
+        usernameLabel.setBounds(150, 150, 100, 50);
+        titlescreen.add(usernameLabel);
 
         JTextField username = new JTextField();
-        username.setBounds(500, 500, 500, 75);
+        username.setBounds(200, 200, 400, 50);
+        username.setFont(new Font("Calibri", Font.BOLD, 20));
         username.setHorizontalAlignment(SwingConstants.CENTER);
-        username.setBackground(Color.BLUE.brighter());
-        username.setForeground(Color.GREEN);
-        username.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        LogIn.add(username);
+        username.setForeground(Color.BLACK);
+        titlescreen.add(username);
 
+        JLabel id = new JLabel("ID:");
+        id.setFont(new Font("Calibri", Font.BOLD, 20));
+        id.setForeground(Color.BLUE);
+        id.setBounds(165, 250, 100, 50);
+        titlescreen.add(id);
 
-        JLabel idLabel = new JLabel("ID:");
+        JTextField idLabel = new JTextField();
+        idLabel.setBounds(200, 300, 400, 50);
+        idLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        idLabel.setBounds(750, 600, 150, 75);
-        idLabel.setBackground(Color.BLUE.brighter());
-        idLabel.setForeground(Color.GREEN);
-        idLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
-        LogIn.add(idLabel);
+        idLabel.setForeground(Color.BLACK);
+        titlescreen.add(idLabel);
 
-        JTextField enterId = new JTextField();
-        enterId.setBounds(500, 750, 500, 75);
-        enterId.setHorizontalAlignment(SwingConstants.CENTER);
-        enterId.setBackground(Color.BLUE.brighter());
-        enterId.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        LogIn.add(enterId);
 
         JButton Login = new JButton("Login");
-        Login.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        Login.setForeground(Color.YELLOW);
-        Login.setBackground(Color.GREEN);
-        Login.setBounds(700, 900, 300, 75);
+        Login.setFont(new Font("Calibri", Font.BOLD, 30));
+        Login.setForeground(Color.WHITE);
+        Login.setBackground(Color.BLUE);
+        Login.setBounds(300, 400, 200, 40);
         Login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -232,7 +288,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             return;
                         }
                         try {
-                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
+                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(idLabel.getText()), true)) {
                                 AdminMenu();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid Admin username or ID");
@@ -250,7 +306,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             return;
                         }
                         try {
-                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(enterId.getText()), true)) {
+                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(idLabel.getText()), true)) {
                                 AdminMenu();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid User username or ID");
@@ -262,7 +318,10 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 }
             }
         });
-        LogIn.add(Login);
+        titlescreen.add(Login);
+
+        titlescreen.revalidate();
+        titlescreen.repaint();
 
     }
 

@@ -4,9 +4,11 @@ public class User {
     private String username;
     private int libraryid;
     private String description;
+    private String firstname;
+    private String lastname;
     private ArrayList<Books> booksrequested = new ArrayList<Books>();
 
-    public User(String username, int libraryid) {
+    public User(String username, int libraryid, String firstname, String lastname) {
         this.username = username;
         this.libraryid = libraryid;
     }

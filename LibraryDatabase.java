@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class LibraryDatabase {
@@ -6,12 +5,12 @@ public class LibraryDatabase {
     private ArrayList<Admin> admins = new ArrayList<Admin>();
     private ArrayList<User> users = new ArrayList<User>();
 
-    public void createAccount(String username, boolean isAdmin) {
+    public void createAccount(String username, boolean isAdmin, String firstname, String lastname) {
         if (isAdmin) {
             Admin admin = new Admin(username, generateid());
             admins.add(admin);
         } else {
-            User user = new User(username, generateid());
+            User user = new User(username, generateid(), firstname, lastname);
             users.add(user);
         }
     }
@@ -20,17 +19,17 @@ public class LibraryDatabase {
         if (isAdmin) {
             for (Admin admin : admins) {
                 if (admin.getUsername().equals(username)) {
-                    return false;
+                    return true;
                 }
             }
         } else {
             for (User user : users) {
                 if (user.getUsername().equals(username)) {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public boolean IDandUsermatch(String user, int id, boolean isAdmin) {
