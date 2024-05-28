@@ -69,6 +69,30 @@ public class LibraryDatabase {
         }
     }
 
+    public void addBook(String username, int id, Books book) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
+                users.get(i).addBook(book);
+                break;
+            }
+        }
+    }
+
+    public void removeBook(String username, int id, Books book) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
+                users.get(i).removeBook(book);
+                break;
+            }
+        }
+    }
+
+    public void acceptRequest() {
+        for (int i = 0; i < admins.size(); i++) {
+            admins.get(i).acceptRequest();
+        }
+    }
+
     public int generateid() {
         return (int)(Math.random() * 900000000 + 100000000);
     }

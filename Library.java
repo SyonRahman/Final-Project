@@ -11,7 +11,6 @@ import javax.swing.border.LineBorder;
 public class Library extends JFrame implements ActionListener, KeyListener {
 
     private JFrame titlescreen = new JFrame("Library App");
-    private JFrame LogIn = new JFrame("Log In");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
 
@@ -20,6 +19,9 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
     LibraryDatabase database = new LibraryDatabase();
 
+    public Library(String test) {
+        AdminMenu();
+    }
     public Library() {
         createComponents();
     }
@@ -30,6 +32,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         titlescreen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         titlescreen.setResizable(false);
         titlescreen.setVisible(true);
+
 
         JPanel leftside = new JPanel();
         leftside.setBackground(new Color(102, 255, 178));
@@ -110,9 +113,27 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
         final boolean[] isAdmin = {false};
         JButton admin = new JButton("Admin");
-        admin.addActionListener(e -> isAdmin[0] = true);
         JButton user = new JButton("User");
-        user.addActionListener(e -> isAdmin[0] = false);
+        admin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                admin.setBackground(Color.BLUE);
+                admin.setForeground(Color.WHITE);
+                user.setBackground(Color.WHITE);
+                user.setForeground(Color.BLUE);
+                isAdmin[0] = true;
+            }
+        });
+        user.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                user.setBackground(Color.BLUE);
+                user.setForeground(Color.WHITE);
+                admin.setBackground(Color.WHITE);
+                admin.setForeground(Color.BLUE);
+                isAdmin[0] = false;
+            }
+        });
 
         admin.setBounds(200, 75, 200, 50);
         user.setBounds(400, 75, 200, 50);
@@ -127,11 +148,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         usernameLabel.setForeground(Color.BLUE);
-        usernameLabel.setBounds(150, 150, 100, 50);
+        usernameLabel.setBounds(150, 125, 100, 50);
         titlescreen.add(usernameLabel);
 
         JTextField username = new JTextField();
-        username.setBounds(200, 200, 400, 50);
+        username.setBounds(200, 175, 400, 50);
         username.setFont(new Font("Calibri", Font.BOLD, 20));
         username.setHorizontalAlignment(SwingConstants.CENTER);
         username.setForeground(Color.BLACK);
@@ -140,11 +161,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         JLabel firstname = new JLabel("First Name:");
         firstname.setFont(new Font("Calibri", Font.BOLD, 20));
         firstname.setForeground(Color.BLUE);
-        firstname.setBounds(150, 250, 100, 50);
+        firstname.setBounds(150, 225, 100, 50);
         titlescreen.add(firstname);
 
         JTextField first = new JTextField();
-        first.setBounds(200, 300, 400, 50);
+        first.setBounds(200, 275, 400, 50);
         first.setFont(new Font("Calibri", Font.BOLD, 20));
         first.setHorizontalAlignment(SwingConstants.CENTER);
         first.setForeground(Color.BLACK);
@@ -153,11 +174,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         JLabel lastname = new JLabel("Last Name:");
         lastname.setFont(new Font("Calibri", Font.BOLD, 20));
         lastname.setForeground(Color.BLUE);
-        lastname.setBounds(150, 350, 100, 50);
+        lastname.setBounds(150, 325, 100, 50);
         titlescreen.add(lastname);
 
         JTextField last = new JTextField();
-        last.setBounds(200, 400, 400, 50);
+        last.setBounds(200, 375, 400, 50);
         last.setFont(new Font("Calibri", Font.BOLD, 20));
         last.setHorizontalAlignment(SwingConstants.CENTER);
         last.setForeground(Color.BLACK);
@@ -168,7 +189,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         SignUp.setFont(new Font("Calibri", Font.BOLD, 30));
         SignUp.setBackground(Color.BLUE);
         SignUp.setForeground(Color.WHITE);
-        SignUp.setBounds(250, 465, 300, 40);
+        SignUp.setBounds(250, 450, 300, 40);
         SignUp.setBorder(new LineBorder(Color.BLACK));
         SignUp.addActionListener(new ActionListener() {
             @Override
@@ -194,7 +215,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         database.createAccount(username.getText(), true, first.getText(), last.getText());
                         JOptionPane.showMessageDialog(null, "Admin account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
-                        logAccount();
+                        createComponents();
                     } else {
                         if (database.isUsernamevalid(username.getText(), false)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
@@ -203,7 +224,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         database.createAccount(username.getText(), false, first.getText(), last.getText());
                         JOptionPane.showMessageDialog(null, "User account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
-                        logAccount();
+                        createComponents();
 
                     }
                 }
@@ -229,9 +250,27 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
         final boolean[] isAdmin = {false};
         JButton admin = new JButton("Admin");
-        admin.addActionListener(e -> isAdmin[0] = true);
         JButton user = new JButton("User");
-        user.addActionListener(e -> isAdmin[0] = false);
+        admin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                admin.setBackground(Color.BLUE);
+                admin.setForeground(Color.WHITE);
+                user.setBackground(Color.WHITE);
+                user.setForeground(Color.BLUE);
+                isAdmin[0] = true;
+            }
+        });
+        user.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                user.setBackground(Color.BLUE);
+                user.setForeground(Color.WHITE);
+                admin.setBackground(Color.WHITE);
+                admin.setForeground(Color.BLUE);
+                isAdmin[0] = false;
+            }
+        });
 
         admin.setBounds(200, 75, 200, 50);
         user.setBounds(400, 75, 200, 50);
@@ -307,7 +346,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         }
                         try {
                             if (database.IDandUsermatch(username.getText(), Integer.parseInt(idLabel.getText()), true)) {
-                                AdminMenu();
+                                UserMenu();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid User username or ID");
                             }
@@ -326,55 +365,57 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     }
 
     public void AdminMenu() {
-        LogIn.setVisible(false);
+        titlescreen.setVisible(false);
         AdminMenu.setLayout(new GridLayout(2, 3));
-        AdminMenu.setSize(1500, 1500);
-        AdminMenu.getContentPane().setBackground(Color.YELLOW);
+        AdminMenu.setSize(1000, 750);
+        AdminMenu.getContentPane().setBackground(new Color(229, 158, 15));
         AdminMenu.setLocationRelativeTo(null);
         AdminMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         AdminMenu.setResizable(false);
         AdminMenu.setVisible(true);
-        AdminMenu.setBackground(Color.YELLOW);
 
         JMenuBar menu = new JMenuBar();
-        LogIn.setJMenuBar(menu);
+        menu.setBackground(Color.WHITE);
         JMenu options = new JMenu("Settings"); menu.add(options);
-        JMenuItem changePassword = new JMenuItem("Change Password"); options.add(changePassword);
+        JMenuItem changeUsername = new JMenuItem("Change Username"); options.add(changeUsername);
         JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
         JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
         menu.setBorderPainted(true);
-        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+        AdminMenu.setJMenuBar(menu);
 
         JButton addBook = new JButton("Add Book");
         JButton removeBook = new JButton("Remove Book");
         JButton viewBooks = new JButton("View Books");
         JButton acceptRequest = new JButton("Accept Request");
+
+        AdminMenu.add(addBook);
+        AdminMenu.add(removeBook);
+        AdminMenu.add(viewBooks);
+        AdminMenu.add(acceptRequest);
     }
 
     public void UserMenu() {
-        LogIn.setVisible(false);
-        UserMenu.setLayout(new GridLayout(2, 3));
-        UserMenu.setSize(1500, 1500);
+        titlescreen.setVisible(false);
+        //UserMenu.setLayout(new GridLayout(2, 3));
+        UserMenu.setSize(1000, 1000);
         UserMenu.getContentPane().setBackground(Color.YELLOW);
         UserMenu.setLocationRelativeTo(null);
         UserMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         UserMenu.setResizable(false);
         UserMenu.setVisible(true);
-        UserMenu.setBackground(Color.YELLOW);
 
         JMenuBar menu = new JMenuBar();
-        LogIn.setJMenuBar(menu);
         JMenu options = new JMenu("Settings"); menu.add(options);
         JMenuItem changePassword = new JMenuItem("Change Password"); options.add(changePassword);
         JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
         JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
         menu.setBorderPainted(true);
-        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
-
-        JButton viewBooks = new JButton("View Books");
-        JButton borrowBook = new JButton("Borrow Book");
-        JButton returnBook = new JButton("Return Book");
-        JButton reserveBook = new JButton("Reserve Book");
+//        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+//
+//        JButton viewBooks = new JButton("View Books");
+//        JButton borrowBook = new JButton("Borrow Book");
+//        JButton returnBook = new JButton("Return Book");
+//        JButton reserveBook = new JButton("Reserve Book");
     }
 
     @Override

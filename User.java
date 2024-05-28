@@ -6,7 +6,8 @@ public class User {
     private String description;
     private String firstname;
     private String lastname;
-    private ArrayList<Books> booksrequested = new ArrayList<Books>();
+    private ArrayList<Books> booksrequested = new ArrayList<>();
+    private ArrayList<Books> booksowned = new ArrayList<>();
 
     public User(String username, int libraryid, String firstname, String lastname) {
         this.username = username;
@@ -14,16 +15,20 @@ public class User {
     }
 
     public void addBook(Books book) {
-        booksrequested.add(book);
+        booksowned.add(book);
     }
 
     public void removeBook(Books book) {
-        for (int i = booksrequested.size(); i >= 0; i--) {
-            if (booksrequested.get(i).getName().equals(book.getName())) {
-                booksrequested.remove(i);
+        for (int i = booksowned.size(); i >= 0; i--) {
+            if (booksowned.get(i).getName().equals(book.getName())) {
+                booksowned.remove(i);
                 break;
             }
         }
+    }]
+
+    public void requestBook(Books book) {
+        booksrequested.add(book);
     }
 
     public void setUsername(String username) {
@@ -46,5 +51,9 @@ public class User {
 
     private ArrayList<Books> getBooksRequested() {
         return booksrequested;
+    }
+
+    private ArrayList<Books> getBooksowned() {
+        return booksowned;
     }
 }
