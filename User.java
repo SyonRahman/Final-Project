@@ -25,7 +25,7 @@ public class User {
                 break;
             }
         }
-    }]
+    }
 
     public void requestBook(Books book) {
         booksrequested.add(book);

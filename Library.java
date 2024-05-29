@@ -366,56 +366,103 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
     public void AdminMenu() {
         titlescreen.setVisible(false);
-        AdminMenu.setLayout(new GridLayout(2, 3));
+        AdminMenu.setLayout(null);
         AdminMenu.setSize(1000, 750);
         AdminMenu.getContentPane().setBackground(new Color(229, 158, 15));
         AdminMenu.setLocationRelativeTo(null);
         AdminMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         AdminMenu.setResizable(false);
-        AdminMenu.setVisible(true);
 
         JMenuBar menu = new JMenuBar();
-        menu.setBackground(Color.WHITE);
+        menu.setBackground(Color.GREEN);
         JMenu options = new JMenu("Settings"); menu.add(options);
+        options.setForeground(Color.BLUE);
         JMenuItem changeUsername = new JMenuItem("Change Username"); options.add(changeUsername);
         JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
         JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
+        JMenuItem checkprofile = new JMenuItem("Check Profile"); options.add(checkprofile);
         menu.setBorderPainted(true);
         AdminMenu.setJMenuBar(menu);
 
-        JButton addBook = new JButton("Add Book");
-        JButton removeBook = new JButton("Remove Book");
-        JButton viewBooks = new JButton("View Books");
-        JButton acceptRequest = new JButton("Accept Request");
+        addingBooks();
+        removingBooks();
+        viewingBooks();
+        acceptingRequests();
 
+
+        AdminMenu.setVisible(true);
+    }
+
+    public void addingBooks() {
+        JButton addBook = new JButton("Add Book");
+        addBook.setBounds(150, 200, 200, 200);
+        addBook.setFont(new Font());
+        addBook.setForeground();
+        addBook.setBackground();
         AdminMenu.add(addBook);
+    }
+
+    public void removingBooks() {
+        JButton removeBook = new JButton("Remove Book");
+        removeBook.setBounds(650, 200, 200, 200);
+        removeBook.setFont(new Font());
+        removeBook.setForeground();
+        removeBook.setBackground();
         AdminMenu.add(removeBook);
+    }
+
+    public void viewingBooks() {
+        JButton viewBooks = new JButton("View Books");
+        viewBooks.setBounds(150, 450, 200, 200);
+        viewBooks.setFont(new Font());
+        viewBooks.setForeground();
+        viewBooks.setBackground();
         AdminMenu.add(viewBooks);
+    }
+
+    public void acceptingRequests() {
+        JButton acceptRequest = new JButton("Accept Request");
+        acceptRequest.setBounds(650, 450, 200, 200);
+        acceptRequest.setFont(new Font());
+        acceptRequest.setForeground();
+        acceptRequest.setBackground();
         AdminMenu.add(acceptRequest);
     }
 
     public void UserMenu() {
         titlescreen.setVisible(false);
         //UserMenu.setLayout(new GridLayout(2, 3));
-        UserMenu.setSize(1000, 1000);
+        UserMenu.setSize(1200, 1200);
         UserMenu.getContentPane().setBackground(Color.YELLOW);
         UserMenu.setLocationRelativeTo(null);
         UserMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         UserMenu.setResizable(false);
-        UserMenu.setVisible(true);
+
 
         JMenuBar menu = new JMenuBar();
+        menu.setBackground(Color.BLUE);
         JMenu options = new JMenu("Settings"); menu.add(options);
         JMenuItem changePassword = new JMenuItem("Change Password"); options.add(changePassword);
         JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
         JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
+        JMenuItem checkprofile = new JMenuItem("Check Profile"); options.add(checkprofile);
         menu.setBorderPainted(true);
-//        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
-//
-//        JButton viewBooks = new JButton("View Books");
-//        JButton borrowBook = new JButton("Borrow Book");
-//        JButton returnBook = new JButton("Return Book");
-//        JButton reserveBook = new JButton("Reserve Book");
+        Border newBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+
+        JButton viewBooks = new JButton("View Books");
+        viewBooks.setBorder(newBorder);
+        JButton borrowBook = new JButton("Borrow Book");
+        JButton returnBook = new JButton("Return Book");
+        JButton reserveBook = new JButton("Reserve Book");
+
+        UserMenu.add(viewBooks);
+        UserMenu.add(borrowBook);
+        UserMenu.add(returnBook);
+        UserMenu.add(reserveBook);
+
+        UserMenu.setJMenuBar(menu);
+
+        UserMenu.setVisible(true);
     }
 
     @Override
