@@ -13,6 +13,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     private JFrame titlescreen = new JFrame("Library App");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
+    private JFrame displayBooks = new JFrame("Books");
 
     private ArrayList<Books> books = new ArrayList<Books>();
 
@@ -377,16 +378,23 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         menu.setBackground(Color.GREEN);
         JMenu options = new JMenu("Settings"); menu.add(options);
         options.setForeground(Color.BLUE);
-        JMenuItem changeUsername = new JMenuItem("Change Username"); options.add(changeUsername);
-        JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
-        JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
         JMenuItem checkprofile = new JMenuItem("Check Profile"); options.add(checkprofile);
+        JMenuItem changeUsername = new JMenuItem("Change Username"); options.add(changeUsername);
+        JMenuItem addDescription = new JMenuItem("Add Description"); options.add(addDescription);
+        JMenuItem logOut = new JMenuItem("Log Out"); options.add(logOut);
+
+        checkprofile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         menu.setBorderPainted(true);
         AdminMenu.setJMenuBar(menu);
 
         addingBooks();
         removingBooks();
-        viewingBooks();
+        inventory();
         acceptingRequests();
 
 
@@ -394,44 +402,108 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     }
 
     public void addingBooks() {
+        final int[] copies = new int[1];
+        final int[] pages = new int[1];
+        final int[] publication = new int[1];
         JButton addBook = new JButton("Add Book");
         addBook.setBounds(150, 200, 200, 200);
-        addBook.setFont(new Font());
-        addBook.setForeground();
-        addBook.setBackground();
+        addBook.setFont(new Font("Calibri", Font.BOLD, 25));
+        addBook.setForeground(Color.WHITE);
+        addBook.setBackground(Color.BLUE);
+        addBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (database.getBooks().size() > 10) {
+                    JOptionPane.showMessageDialog(null, "You have reached the maximum amount of books", "Books Filled Out", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String bookname = JOptionPane.showInputDialog(null, "Enter the name of the book");
+                String author = JOptionPane.showInputDialog(null, "Enter the name of the author");
+                try {
+                    copies[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of copies"));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Copies must be a number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                try {
+                    pages[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of pages"));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Pages must be a number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String genre = JOptionPane.showInputDialog(null, "Enter the genre of the book");
+                try {
+                    publication[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the year of publication"));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Year of publication must be a number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (copies[0] < 0 || pages[0] < 0 || publication[0] < 0) {
+                    JOptionPane.showMessageDialog(null, "Copies, pages, and publication year must be greater than 0", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                JOptionPane.showMessageDialog(null, "Here is all the information: " +
+                        "\nBook Name: " + bookname +
+                        "\nAuthor: " + author +
+                        "\nCopies: " + copies[0] +
+                        "\nPages: " + pages[0] +
+                        "\nGenre: " + genre +
+                        "\nYear of Publication: " + publication[0]);
+                int choice = JOptionPane.showConfirmDialog(null, "Do you want to add this book to the library?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.NO_OPTION) {
+                    return;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Book added to library");
+                }
+                database.addBooktoLibrary(bookname, author, copies[0], pages[0], genre, publication[0]);
+            }
+        });
         AdminMenu.add(addBook);
     }
 
     public void removingBooks() {
         JButton removeBook = new JButton("Remove Book");
         removeBook.setBounds(650, 200, 200, 200);
-        removeBook.setFont(new Font());
-        removeBook.setForeground();
-        removeBook.setBackground();
+        removeBook.setFont(new Font("Calibri", Font.BOLD, 25));
+        removeBook.setForeground(Color.WHITE);
+        removeBook.setBackground(Color.BLUE);
+        removeBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         AdminMenu.add(removeBook);
     }
 
-    public void viewingBooks() {
+    public void inventory() {
         JButton viewBooks = new JButton("View Books");
         viewBooks.setBounds(150, 450, 200, 200);
-        viewBooks.setFont(new Font());
-        viewBooks.setForeground();
-        viewBooks.setBackground();
+        viewBooks.setFont(new Font("Calibri", Font.BOLD, 25));
+        viewBooks.setForeground(Color.WHITE);
+        viewBooks.setBackground(Color.BLUE);
+        viewBooks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdminMenu.setVisible(false);
+                AdminMenu();
+            }
+        });
         AdminMenu.add(viewBooks);
     }
 
     public void acceptingRequests() {
         JButton acceptRequest = new JButton("Accept Request");
         acceptRequest.setBounds(650, 450, 200, 200);
-        acceptRequest.setFont(new Font());
-        acceptRequest.setForeground();
-        acceptRequest.setBackground();
+        acceptRequest.setFont(new Font("Calibri", Font.BOLD, 25));
+        acceptRequest.setForeground(Color.WHITE);
+        acceptRequest.setBackground(Color.BLUE);
         AdminMenu.add(acceptRequest);
     }
 
     public void UserMenu() {
         titlescreen.setVisible(false);
-        //UserMenu.setLayout(new GridLayout(2, 3));
+        UserMenu.setLayout(null);
         UserMenu.setSize(1200, 1200);
         UserMenu.getContentPane().setBackground(Color.YELLOW);
         UserMenu.setLocationRelativeTo(null);
