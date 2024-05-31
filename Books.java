@@ -1,19 +1,21 @@
 public class Books {
 
-    private String name;
+    private String title;
     private String author;
     private int copies;
     private int pages;
     private String genre;
+    private String description;
     private int yearofpublication;
 
-    public Books(String name, String author, int copies, int pages, String genre, int yearofpublication) {
-        this.name = name;
+    public Books(String title, String author, int copies, int pages, String genre, int yearofpublication, String description) {
+        this.title = title;
         this.author = author;
         this.copies = copies;
         this.pages = pages;
         this.genre = genre;
         this.yearofpublication = yearofpublication;
+        this.description = description;
     }
     public void changeCopies() {
         copies--;
@@ -28,8 +30,8 @@ public class Books {
         this.yearofpublication = yearofpublication;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public int getCopies() {

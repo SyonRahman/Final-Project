@@ -20,7 +20,7 @@ public class User {
 
     public void removeBook(Books book) {
         for (int i = booksowned.size(); i >= 0; i--) {
-            if (booksowned.get(i).getName().equals(book.getName())) {
+            if (booksowned.get(i).getTitle().equals(book.getTitle())) {
                 booksowned.remove(i);
                 break;
             }

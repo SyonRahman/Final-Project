@@ -34,9 +34,13 @@ public class LibraryDatabase {
         return false;
     }
 
-    public void addBooktoLibrary(String name, String author, int copies, int pages, String genre, int yearofpublication) {
-        Books book = new Books(name, author, copies, pages, genre, yearofpublication);
+    public void addBooktoLibrary(String name, String author, int copies, int pages, String genre, int yearofpublication, String description) {
+        Books book = new Books(name, author, copies, pages, genre, yearofpublication, description);
         books.add(book);
+    }
+
+    public void removeBookfromLibrary(int remove) {
+        books.remove(remove);
     }
 
     public boolean IDandUsermatch(String user, int id, boolean isAdmin) {
@@ -80,15 +84,6 @@ public class LibraryDatabase {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
                 users.get(i).addBook(book);
-                break;
-            }
-        }
-    }
-
-    public void removeBook(String username, int id, Books book) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
-                users.get(i).removeBook(book);
                 break;
             }
         }

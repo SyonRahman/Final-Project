@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 
 public class Library extends JFrame implements ActionListener, KeyListener {
 
+    String username;
     private JFrame titlescreen = new JFrame("Library App");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
@@ -21,6 +22,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     LibraryDatabase database = new LibraryDatabase();
 
     public Library(String test) {
+        UIManager.put("OptionPane.messageFont", new Font("Calibri", Font.BOLD, 18)); // Set font
+        UIManager.put("OptionPane.messageForeground", Color.RED); // Set font color
+        UIManager.put("OptionPane.buttonFont", new Font("Calibri", Font.BOLD, 18)); // Set button font
+        UIManager.put("OptionPane.background", Color.BLUE.brighter()); // Set background color
+        UIManager.put("Panel.background", new Color(149, 234, 222)); // Set panel background color
         AdminMenu();
     }
     public Library() {
@@ -418,6 +424,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                     return;
                 }
                 String bookname = JOptionPane.showInputDialog(null, "Enter the name of the book");
+                for (int i = 0; i < database.getBooks().size(); i++) {
+                    if (database.getBooks().get(i).getTitle().equalsIgnoreCase(bookname)) {
+                        JOptionPane.showMessageDialog(null, "Book has already been added to library", "Book already added!" ,JOptionPane.ERROR_MESSAGE);
+                    }
+                }
                 String author = JOptionPane.showInputDialog(null, "Enter the name of the author");
                 try {
                     copies[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of copies"));
@@ -438,6 +449,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                     JOptionPane.showMessageDialog(null, "Year of publication must be a number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                String description = JOptionPane.showInputDialog(null, "Enter a description of the book");
                 if (copies[0] < 0 || pages[0] < 0 || publication[0] < 0) {
                     JOptionPane.showMessageDialog(null, "Copies, pages, and publication year must be greater than 0", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -448,14 +460,15 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                         "\nCopies: " + copies[0] +
                         "\nPages: " + pages[0] +
                         "\nGenre: " + genre +
-                        "\nYear of Publication: " + publication[0]);
+                        "\nYear of Publication: " + publication[0] +
+                        "\nDescription: " + description);
                 int choice = JOptionPane.showConfirmDialog(null, "Do you want to add this book to the library?", "Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.NO_OPTION) {
                     return;
                 } else {
                     JOptionPane.showMessageDialog(null, "Book added to library");
                 }
-                database.addBooktoLibrary(bookname, author, copies[0], pages[0], genre, publication[0]);
+                database.addBooktoLibrary(bookname, author, copies[0], pages[0], genre, publication[0], description);
             }
         });
         AdminMenu.add(addBook);
@@ -470,7 +483,15 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         removeBook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String remove = JOptionPane.showInputDialog(null, "Enter the title of the book you wish to remove");
+                for (int i = 0; i < database.getBooks().size(); i++) {
+                    if (database.getBooks().get(i).getTitle().equalsIgnoreCase(remove)) {
+                        database.removeBookfromLibrary(i);
+                        JOptionPane.showMessageDialog(null, "Book removed from library");
+                        return;
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "No such book found");
             }
         });
         AdminMenu.add(removeBook);
