@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class Library extends JFrame implements ActionListener, KeyListener {
 
-    String username;
     private JFrame titlescreen = new JFrame("Library App");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
     private JFrame displayBooks = new JFrame("Books");
+    private User libraryuser;
 
     private ArrayList<Books> books = new ArrayList<Books>();
 
@@ -294,12 +295,12 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         usernameLabel.setBounds(150, 150, 100, 50);
         titlescreen.add(usernameLabel);
 
-        JTextField username = new JTextField();
-        username.setBounds(200, 200, 400, 50);
-        username.setFont(new Font("Calibri", Font.BOLD, 20));
-        username.setHorizontalAlignment(SwingConstants.CENTER);
-        username.setForeground(Color.BLACK);
-        titlescreen.add(username);
+        JTextField usernametext = new JTextField();
+        usernametext.setBounds(200, 200, 400, 50);
+        usernametext.setFont(new Font("Calibri", Font.BOLD, 20));
+        usernametext.setHorizontalAlignment(SwingConstants.CENTER);
+        usernametext.setForeground(Color.BLACK);
+        titlescreen.add(usernametext);
 
         JLabel id = new JLabel("ID:");
         id.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -325,7 +326,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == Login) {
                     if (isAdmin[0]) {
-                        if (username.getText().length() < 5) {
+                        if (usernametext.getText().length() < 5) {
                             JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
                             return;
                         }
@@ -334,7 +335,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             return;
                         }
                         try {
-                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(idLabel.getText()), true)) {
+                            if (database.IDandUsermatch(usernametext.getText(), Integer.parseInt(idLabel.getText()), true)) {
+                                JOptionPane.showMessageDialog(null, "Admin successfully logged in");
                                 AdminMenu();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid Admin username or ID");
@@ -343,7 +345,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             JOptionPane.showMessageDialog(null, "Invalid ID");
                         }
                     } else {
-                        if (username.getText().length() < 5) {
+                        if (usernametext.getText().length() < 5) {
                             JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long");
                             return;
                         }
@@ -352,8 +354,14 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             return;
                         }
                         try {
-                            if (database.IDandUsermatch(username.getText(), Integer.parseInt(idLabel.getText()), true)) {
-                                UserMenu();
+                            if (database.IDandUsermatch(usernametext.getText(), Integer.parseInt(idLabel.getText()), false)) {
+                                for (int i = 0; i < database.getUsers().size(); i++) {
+                                    if (database.getUsers().get(i).getUsername().equals(usernametext.getText())) {
+                                        libraryuser = database.getUsers().get(i);
+                                    }
+                                }
+                                JOptionPane.showMessageDialog(null, "User successfully logged in");
+                                UserMenu(libraryuser);
                             } else {
                                 JOptionPane.showMessageDialog(null, "Invalid User username or ID");
                             }
@@ -393,6 +401,13 @@ public class Library extends JFrame implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdminMenu.setVisible(false);
+                createComponents();
             }
         });
         menu.setBorderPainted(true);
@@ -498,6 +513,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
     }
 
     public void inventory() {
+        AdminMenu.setVisible(false);
         JButton viewBooks = new JButton("View Books");
         viewBooks.setBounds(150, 450, 200, 200);
         viewBooks.setFont(new Font("Calibri", Font.BOLD, 25));
@@ -506,8 +522,68 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         viewBooks.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdminMenu.setVisible(false);
-                AdminMenu();
+                displayBooks.setLayout(null);
+                displayBooks.setSize(1000, 750);
+                displayBooks.getContentPane().setBackground(new Color(229, 158, 15));
+                displayBooks.setLocationRelativeTo(null);
+                displayBooks.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                displayBooks.setResizable(false);
+
+                JLabel title = new JLabel("Book Inventory");
+                title.setBounds(350, 25, 500, 50);
+                title.setFont(new Font("Calibri", Font.BOLD, 30));
+                title.setForeground(Color.BLACK);
+                displayBooks.add(title);
+
+
+                String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
+                Object[][] data = new Object[database.getBooks().size()][7];
+                for (int i = 0; i < database.getBooks().size(); i++) {
+                    data[i][0] = database.getBooks().get(i).getTitle();
+                    data[i][1] = database.getBooks().get(i).getAuthor();
+                    data[i][2] = database.getBooks().get(i).getCopies();
+                    data[i][3] = database.getBooks().get(i).getPages();
+                    data[i][4] = database.getBooks().get(i).getGenre();
+                    data[i][5] = database.getBooks().get(i).getYearofpublication();
+                    data[i][6] = database.getBooks().get(i).getDescription();
+                }
+                JTable table = new JTable(data, columns);
+                table.setFont(new Font("Calibri", Font.BOLD, 20));
+                table.setRowHeight(30);
+                table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                table.getColumnModel().getColumn(0).setPreferredWidth(200);
+                table.getColumnModel().getColumn(1).setPreferredWidth(200);
+                table.getColumnModel().getColumn(2).setPreferredWidth(100);
+                table.getColumnModel().getColumn(3).setPreferredWidth(100);
+                table.getColumnModel().getColumn(4).setPreferredWidth(200);
+                table.getColumnModel().getColumn(5).setPreferredWidth(200);
+                table.getColumnModel().getColumn(6).setPreferredWidth(400);
+
+                table.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        int row = table.rowAtPoint(evt.getPoint());
+                        int col = table.columnAtPoint(evt.getPoint());
+                        if (row >= 0 && col >= 0) {
+                            JOptionPane.showMessageDialog(null, "Title: " + table.getValueAt(row, 0) +
+                                    "\nAuthor: " + table.getValueAt(row, 1) +
+                                    "\nCopies: " + table.getValueAt(row, 2) +
+                                    "\nPages: " + table.getValueAt(row, 3) +
+                                    "\nGenre: " + table.getValueAt(row, 4) +
+                                    "\nYear of Publication: " + table.getValueAt(row, 5) +
+                                    "\nDescription: " + table.getValueAt(row, 6));
+                        }
+                    }
+                });
+
+
+                JScrollPane scrollPane = new JScrollPane(table);
+                scrollPane.setBounds(100, 100, 800, 500);
+                displayBooks.add(scrollPane);
+
+
+                displayBooks.setVisible(true);
+
             }
         });
         AdminMenu.add(viewBooks);
@@ -519,10 +595,77 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         acceptRequest.setFont(new Font("Calibri", Font.BOLD, 25));
         acceptRequest.setForeground(Color.WHITE);
         acceptRequest.setBackground(Color.BLUE);
+        acceptRequest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame requestedBooks = new JFrame("Requested Books");
+                requestedBooks.setLayout(null);
+                requestedBooks.setSize(1000, 750);
+                requestedBooks.getContentPane().setBackground(new Color(229, 158, 15));
+                requestedBooks.setLocationRelativeTo(null);
+                requestedBooks.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                JLabel title = new JLabel("Requested Books");
+                title.setBounds(350, 25, 500, 50);
+                title.setFont(new Font("Calibri", Font.BOLD, 30));
+                title.setForeground(Color.BLACK);
+
+                String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
+                Object[][] data = new Object[database.getBooks().size()][7];
+                for (int i = 0; i < database.getBooks().size(); i++) {
+                    data[i][0] = database.getBooks().get(i).getTitle();
+                    data[i][1] = database.getBooks().get(i).getAuthor();
+                    data[i][2] = database.getBooks().get(i).getCopies();
+                    data[i][3] = database.getBooks().get(i).getPages();
+                    data[i][4] = database.getBooks().get(i).getGenre();
+                    data[i][5] = database.getBooks().get(i).getYearofpublication();
+                    data[i][6] = database.getBooks().get(i).getDescription();
+                }
+                JTable table = new JTable(data, columns);
+                table.setFont(new Font("Calibri", Font.BOLD, 20));
+                table.setRowHeight(30);
+                table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                table.getColumnModel().getColumn(0).setPreferredWidth(200);
+                table.getColumnModel().getColumn(1).setPreferredWidth(200);
+                table.getColumnModel().getColumn(2).setPreferredWidth(100);
+                table.getColumnModel().getColumn(3).setPreferredWidth(100);
+                table.getColumnModel().getColumn(4).setPreferredWidth(200);
+                table.getColumnModel().getColumn(5).setPreferredWidth(200);
+                table.getColumnModel().getColumn(6).setPreferredWidth(400);
+
+                table.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        int row = table.rowAtPoint(evt.getPoint());
+                        int col = table.columnAtPoint(evt.getPoint());
+                        if (row >= 0 && col >= 0) {
+                            JOptionPane.showMessageDialog(null, "Title: " + table.getValueAt(row, 0) +
+                                    "\nAuthor: " + table.getValueAt(row, 1) +
+                                    "\nCopies: " + table.getValueAt(row, 2) +
+                                    "\nPages: " + table.getValueAt(row, 3) +
+                                    "\nGenre: " + table.getValueAt(row, 4) +
+                                    "\nYear of Publication: " + table.getValueAt(row, 5) +
+                                    "\nDescription: " + table.getValueAt(row, 6));
+                        }
+                        int option = JOptionPane.showConfirmDialog(null, "Do you want to accept this request?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                        if (option == JOptionPane.YES_OPTION) {
+                            JOptionPane.showMessageDialog(null, "Request accepted");
+                            database.addBooktoLibrary(table.getValueAt(row, 0).toString(), table.getValueAt(row, 1).toString(), (int)table.getValueAt(row, 2), (int)table.getValueAt(row, 3),
+                                    table.getValueAt(row, 4).toString(), (int)table.getValueAt(row, 5), table.getValueAt(row, 6).toString());
+                            database.removeRequest(row);
+                            DefaultTableModel model = (DefaultTableModel) table.getModel();
+                            model.removeRow(row);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Request denied");
+                        }
+                    }
+                });
+            }
+        });
         AdminMenu.add(acceptRequest);
     }
 
-    public void UserMenu() {
+    public void UserMenu(User user) {
         titlescreen.setVisible(false);
         UserMenu.setLayout(null);
         UserMenu.setSize(1200, 1200);

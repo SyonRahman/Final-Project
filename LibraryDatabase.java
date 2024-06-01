@@ -6,6 +6,7 @@ public class LibraryDatabase {
     private ArrayList<Admin> admins = new ArrayList<Admin>();
     private ArrayList<User> users = new ArrayList<User>();
     private ArrayList<Books> books = new ArrayList<Books>();
+    private ArrayList<Books> requestedbooks = new ArrayList<Books>();
 
     public void createAccount(String username, boolean isAdmin, String firstname, String lastname) {
         if (isAdmin) {
@@ -20,13 +21,13 @@ public class LibraryDatabase {
     public boolean isUsernamevalid(String username, boolean isAdmin) {
         if (isAdmin) {
             for (Admin admin : admins) {
-                if (admin.getUsername().equals(username)) {
+                if (admin.getUsername().equalsIgnoreCase(username)) {
                     return true;
                 }
             }
         } else {
             for (User user : users) {
-                if (user.getUsername().equals(username)) {
+                if (user.getUsername().equalsIgnoreCase(username)) {
                     return true;
                 }
             }
@@ -89,11 +90,10 @@ public class LibraryDatabase {
         }
     }
 
-    public void acceptRequest() {
-        for (int i = 0; i < admins.size(); i++) {
-            admins.get(i).acceptRequest();
-        }
+    public void removeRequest(int index) {
+        requestedbooks.remove(index);
     }
+
 
     public int generateid() {
         return (int)(Math.random() * 900000000 + 100000000);

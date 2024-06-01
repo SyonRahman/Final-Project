@@ -34,6 +34,14 @@ public class Books {
         return title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public int getCopies() {
         return copies;
     }
