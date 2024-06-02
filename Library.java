@@ -413,8 +413,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         AdminMenu.setResizable(false);
 
         JLabel title = new JLabel("Welcome Admin " + admin.getUsername());
-        title.setBounds(350, 25, 500, 75);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(375, 25, 500, 100);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         AdminMenu.add(title);
 
@@ -626,8 +626,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         inventory.setResizable(false);
 
         JLabel title = new JLabel("Book Inventory");
-        title.setBounds(400, 25, 500, 50);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(375, 25, 500, 100);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         inventory.add(title);
 
@@ -685,8 +685,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         requestedBooks.setResizable(false);
 
         JLabel title = new JLabel("Requested Books");
-        title.setBounds(350, 25, 500, 50);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(375, 25, 500, 100);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
 
 
@@ -769,7 +769,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
         JLabel title = new JLabel("Welcome " + "User " + user.getUsername());
         title.setBounds(400, 25, 500, 100);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         UserMenu.add(title);
 
@@ -856,8 +856,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         viewBooks.setBackground(Color.BLUE);
 
         JLabel title = new JLabel("Books Currently Owned");
-        title.setBounds(400, 25, 500, 50);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(350, 25, 500, 50);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         displayBooks.add(title);
 
@@ -907,6 +907,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 JScrollPane scrollPane = new JScrollPane(inventorybooks);
                 scrollPane.setBounds(100, 100, 800, 500);
                 displayBooks.add(scrollPane);
+                displayBooks.setVisible(true);
             }
         });
         UserMenu.add(viewBooks);
@@ -922,8 +923,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         borrowBooks.setResizable(false);
 
         JLabel title = new JLabel("Book Inventory");
-        title.setBounds(400, 25, 500, 50);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(350, 25, 500, 50);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         borrowBooks.add(title);
 
@@ -1045,8 +1046,8 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         returnBooks.setResizable(false);
 
         JLabel title = new JLabel("Books Borrowed");
-        title.setBounds(400, 25, 500, 50);
-        title.setFont(new Font("Calibri", Font.BOLD, 30));
+        title.setBounds(350, 25, 500, 50);
+        title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         returnBooks.add(title);
 
@@ -1115,8 +1116,6 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 returnBooks.setVisible(true);
             }
         });
-        UserMenu.revalidate();
-        UserMenu.repaint();
         UserMenu.add(returnBook);
     }
 
