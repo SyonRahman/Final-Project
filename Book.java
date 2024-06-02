@@ -1,4 +1,4 @@
-public class Books {
+public class Book {
 
     private String title;
     private String author;
@@ -8,7 +8,7 @@ public class Books {
     private String description;
     private int yearofpublication;
 
-    public Books(String title, String author, int copies, int pages, String genre, int yearofpublication, String description) {
+    public Book(String title, String author, int copies, int pages, String genre, int yearofpublication, String description) {
         this.title = title;
         this.author = author;
         this.copies = copies;
@@ -21,14 +21,7 @@ public class Books {
         copies--;
     }
 
-    public void addCopies(int copies) {
-        this.copies += copies;
-    }
 
-    public void additionalInformation(String genre, int yearofpublication) {
-        this.genre = genre;
-        this.yearofpublication = yearofpublication;
-    }
 
     public String getTitle() {
         return title;

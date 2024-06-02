@@ -1,16 +1,15 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class LibraryDatabase {
 
     private ArrayList<Admin> admins = new ArrayList<Admin>();
     private ArrayList<User> users = new ArrayList<User>();
-    private ArrayList<Books> books = new ArrayList<Books>();
-    private ArrayList<Books> requestedbooks = new ArrayList<Books>();
+    private ArrayList<Book> books = new ArrayList<Book>();
+    private ArrayList<Book> requestedbooks = new ArrayList<Book>();
 
     public void createAccount(String username, boolean isAdmin, String firstname, String lastname) {
         if (isAdmin) {
-            Admin admin = new Admin(username, generateid());
+            Admin admin = new Admin(username, generateid(), firstname, lastname);
             admins.add(admin);
         } else {
             User user = new User(username, generateid(), firstname, lastname);
@@ -36,7 +35,7 @@ public class LibraryDatabase {
     }
 
     public void addBooktoLibrary(String name, String author, int copies, int pages, String genre, int yearofpublication, String description) {
-        Books book = new Books(name, author, copies, pages, genre, yearofpublication, description);
+        Book book = new Book(name, author, copies, pages, genre, yearofpublication, description);
         books.add(book);
     }
 
@@ -61,27 +60,7 @@ public class LibraryDatabase {
         return false;
     }
 
-    public void modifydetails(String description, String username, int id, boolean isAdmin) {
-        if (isAdmin) {
-            for (int i = 0; i < admins.size(); i++) {
-                if (admins.get(i).getUsername().equals(username) && admins.get(i).getLibraryid() == id) {
-                    admins.get(i).setDescription(description);
-                    admins.get(i).setUsername(username);
-                    break;
-                }
-            }
-        } else {
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
-                    users.get(i).setDescription(description);
-                    users.get(i).setUsername(username);
-                    break;
-                }
-            }
-        }
-    }
-
-    public void addBook(String username, int id, Books book) {
+    public void addBook(String username, int id, Book book) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
                 users.get(i).addBook(book);
@@ -90,8 +69,16 @@ public class LibraryDatabase {
         }
     }
 
-    public void removeRequest(int index) {
-        requestedbooks.remove(index);
+    public void removeRequest(String title) {
+        for (int i = 0; i < requestedbooks.size(); i++) {
+            if (requestedbooks.get(i).getTitle().equals(title)) {
+                requestedbooks.remove(i);
+            }
+        }
+    }
+
+    public void addRequest(Book book) {
+        requestedbooks.add(book);
     }
 
 
@@ -106,7 +93,7 @@ public class LibraryDatabase {
     public ArrayList<User> getUsers() {
         return users;
     }
-    public ArrayList<Books> getBooks() {
+    public ArrayList<Book> getBooks() {
         return books;
     }
 
