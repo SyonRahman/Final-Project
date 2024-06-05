@@ -12,14 +12,16 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class Library extends JFrame implements ActionListener, KeyListener {
+public class Library extends JFrame implements ActionListener {
 
     private JFrame titlescreen = new JFrame("Library App");
     private JFrame AdminMenu = new JFrame("Admin Menu");
     private JFrame UserMenu = new JFrame("User Menu");
     private User libraryuser;
     private Admin libraryadmin;
+    private JScrollPane libraryPane;
 
     LibraryDatabase database = new LibraryDatabase();
 
@@ -470,7 +472,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 profile.setSize(500, 500);
                 profile.getContentPane().setBackground(new Color(229, 158, 15));
                 profile.setLocationRelativeTo(null);
-                profile.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                profile.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
                 JLabel title = new JLabel("Admin Profile");
                 title.setBounds(150, 25, 200, 50);
@@ -479,35 +481,40 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 profile.add(title);
 
                 JLabel username = new JLabel("Username: " + admin.getUsername());
-                username.setBounds(150, 100, 200, 50);
+                username.setBounds(150, 150, 200, 50);
                 username.setFont(new Font("Calibri", Font.BOLD, 20));
                 username.setForeground(Color.BLACK);
                 profile.add(username);
 
                 JLabel firstname = new JLabel("First Name: " + admin.getFirstname());
-                firstname.setBounds(150, 150, 200, 50);
+                firstname.setBounds(150, 200, 200, 50);
                 firstname.setFont(new Font("Calibri", Font.BOLD, 20));
                 firstname.setForeground(Color.BLACK);
                 profile.add(firstname);
 
                 JLabel lastname = new JLabel("Last Name: " + admin.getLastname());
-                lastname.setBounds(150, 200, 200, 50);
+                lastname.setBounds(150, 250, 200, 50);
                 lastname.setFont(new Font("Calibri", Font.BOLD, 20));
                 lastname.setForeground(Color.BLACK);
                 profile.add(lastname);
 
+                if (admin.getDescription() == null) {
+                    admin.setDescription("No description added");
+                }
                 JLabel description = new JLabel("Description: " + admin.getDescription());
-                description.setBounds(150, 250, 200, 50);
+                description.setBounds(150, 300, 200, 200);
                 description.setFont(new Font("Calibri", Font.BOLD, 20));
                 description.setForeground(Color.BLACK);
                 profile.add(description);
+
+                profile.setVisible(true);
 
             }
         });
         logOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdminMenu.setVisible(false);
+                AdminMenu.dispose();
                 createComponents();
             }
         });
@@ -522,6 +529,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
         AdminMenu.setVisible(true);
     }
+
 
     public void addingBooks() {
         final int[] copies = new int[1];
@@ -543,6 +551,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 for (int i = 0; i < database.getBooks().size(); i++) {
                     if (database.getBooks().get(i).getTitle().equalsIgnoreCase(bookname)) {
                         JOptionPane.showMessageDialog(null, "Book has already been added to library", "Book already added!", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
                 }
                 String author = JOptionPane.showInputDialog(null, "Enter the name of the author");
@@ -561,6 +570,10 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 String genre = JOptionPane.showInputDialog(null, "Enter the genre of the book");
                 try {
                     publication[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the year of publication"));
+                    if (publication[0] > 2024) {
+                        JOptionPane.showMessageDialog(null, "Year of publication cannot be in the future", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Year of publication must be a number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -603,17 +616,23 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 if (remove.isEmpty()) {
                     return;
                 }
-                for (int i = 0; i < database.getBooks().size(); i++) {
-                    if (database.getBooks().get(i).getTitle().equalsIgnoreCase(remove)) {
-                        database.removeBookfromLibrary(i);
-                        JOptionPane.showMessageDialog(null, "Book removed from library");
-                        return;
-                    }
-                }
-                JOptionPane.showMessageDialog(null, "No such book found");
+                removeBookRecursion(0, remove);
             }
         });
         AdminMenu.add(removeBook);
+    }
+
+    public void removeBookRecursion(int index, String title) {
+        if (index >= database.getBooks().size()) {
+            JOptionPane.showMessageDialog(null, "No such book found");
+            return;
+        }
+        if (database.getBooks().get(index).getTitle().equalsIgnoreCase(title)) {
+            database.removeBookfromLibrary(index);
+            JOptionPane.showMessageDialog(null, "Book removed from library");
+            return;
+        }
+        removeBookRecursion(index + 1, title);
     }
 
     public void inventory() {
@@ -640,17 +659,19 @@ public class Library extends JFrame implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
-                Object[][] data = new Object[database.getBooks().size()][7];
+                DefaultTableModel model = new DefaultTableModel(columns, 0);
                 for (int i = 0; i < database.getBooks().size(); i++) {
-                    data[i][0] = database.getBooks().get(i).getTitle();
-                    data[i][1] = database.getBooks().get(i).getAuthor();
-                    data[i][2] = database.getBooks().get(i).getCopies();
-                    data[i][3] = database.getBooks().get(i).getPages();
-                    data[i][4] = database.getBooks().get(i).getGenre();
-                    data[i][5] = database.getBooks().get(i).getYearofpublication();
-                    data[i][6] = database.getBooks().get(i).getDescription();
+                    Object[] data = new Object[7];
+                    data[0] = database.getBooks().get(i).getTitle();
+                    data[1] = database.getBooks().get(i).getAuthor();
+                    data[2] = database.getBooks().get(i).getCopies();
+                    data[3] = database.getBooks().get(i).getPages();
+                    data[4] = database.getBooks().get(i).getGenre();
+                    data[5] = database.getBooks().get(i).getYearofpublication();
+                    data[6] = database.getBooks().get(i).getDescription();
+                    model.addRow(data);
                 }
-                JTable table = new JTable(data, columns);
+                JTable table = new JTable(model);
                 table.setFont(new Font("Calibri", Font.BOLD, 20));
                 table.setRowHeight(30);
                 table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -662,9 +683,19 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 table.getColumnModel().getColumn(5).setPreferredWidth(200);
                 table.getColumnModel().getColumn(6).setPreferredWidth(400);
 
-                JScrollPane scrollPane = new JScrollPane(table);
-                scrollPane.setBounds(100, 100, 800, 500);
-                inventory.add(scrollPane);
+                if (libraryPane != null) {
+                    inventory.remove(libraryPane);
+                }
+
+                libraryPane = new JScrollPane(table);
+                libraryPane.setBounds(100, 100, 800, 500);
+                inventory.add(libraryPane);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+                table.setRowSorter(sorter);
+
+                inventory.revalidate();
+                inventory.repaint();
 
                 inventory.setVisible(true);
 
@@ -779,12 +810,12 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         menu.add(options);
         JMenuItem changeUsername = new JMenuItem("Change Username");
         options.add(changeUsername);
-        JMenuItem logOut = new JMenuItem("Log Out");
-        options.add(logOut);
         JMenuItem addDescription = new JMenuItem("Add Description");
         options.add(addDescription);
         JMenuItem checkprofile = new JMenuItem("Check Profile");
         options.add(checkprofile);
+        JMenuItem logOut = new JMenuItem("Log Out");
+        options.add(logOut);
 
         addDescription.addActionListener(new ActionListener() {
             @Override
@@ -803,7 +834,7 @@ public class Library extends JFrame implements ActionListener, KeyListener {
         logOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UserMenu.setVisible(false);
+                UserMenu.dispose();
                 createComponents();
             }
         });
@@ -822,6 +853,53 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                 }
                 user.setUsername(newUsername);
                 JOptionPane.showMessageDialog(null, "Username changed to " + newUsername);
+            }
+        });
+
+        checkprofile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame profile = new JFrame("Profile");
+                profile.setLayout(null);
+                profile.setSize(500, 500);
+                profile.getContentPane().setBackground(new Color(229, 158, 15));
+                profile.setLocationRelativeTo(null);
+                profile.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                JLabel title = new JLabel("User Profile");
+                title.setBounds(150, 25, 200, 50);
+                title.setFont(new Font("Calibri", Font.BOLD, 20));
+                title.setForeground(Color.BLACK);
+                profile.add(title);
+
+                JLabel username = new JLabel("Username: " + user.getUsername());
+                username.setBounds(150, 150, 200, 50);
+                username.setFont(new Font("Calibri", Font.BOLD, 20));
+                username.setForeground(Color.BLACK);
+                profile.add(username);
+
+                JLabel firstname = new JLabel("First Name: " + user.getFirstname());
+                firstname.setBounds(150, 250, 200, 50);
+                firstname.setFont(new Font("Calibri", Font.BOLD, 20));
+                firstname.setForeground(Color.BLACK);
+                profile.add(firstname);
+
+                JLabel lastname = new JLabel("Last Name: " + user.getLastname());
+                lastname.setBounds(150, 300, 200, 50);
+                lastname.setFont(new Font("Calibri", Font.BOLD, 20));
+                lastname.setForeground(Color.BLACK);
+                profile.add(lastname);
+
+                if (user.getDescription() == null) {
+                    user.setDescription("No description added");
+                }
+                JLabel description = new JLabel("Description: " + user.getDescription());
+                description.setBounds(150, 300, 300, 150);
+                description.setFont(new Font("Calibri", Font.BOLD, 20));
+                description.setForeground(Color.BLACK);
+                profile.add(description);
+
+                profile.setVisible(true);
             }
         });
 
@@ -970,8 +1048,11 @@ public class Library extends JFrame implements ActionListener, KeyListener {
                             user.addBook(new Book(table.getValueAt(row, 0).toString(), table.getValueAt(row, 1).toString(), (int) table.getValueAt(row, 2), (int) table.getValueAt(row, 3),
                                     table.getValueAt(row, 4).toString(), (int) table.getValueAt(row, 5), table.getValueAt(row, 6).toString()));
                             database.removeBookfromLibrary(row);
-                            DefaultTableModel model = (DefaultTableModel) table.getModel();
-                            model.removeRow(row);
+                            for (int i = 0; i < database.getBooks().size(); i++) {
+                                if (database.getBooks().get(i).getTitle().equals(table.getValueAt(row, 0).toString())) {
+                                    database.getBooks().get(i).changeCopies();
+                                }
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "Book not borrowed");
                         }
@@ -1125,18 +1206,4 @@ public class Library extends JFrame implements ActionListener, KeyListener {
 
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }

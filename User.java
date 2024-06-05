@@ -43,6 +43,18 @@ public class User {
         return libraryid;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
     public ArrayList<Book> getBooksowned() {
         return booksowned;
     }
