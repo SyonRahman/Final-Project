@@ -21,6 +21,10 @@ public class Book {
         copies--;
     }
 
+    public void addCopies() {
+        copies++;
+    }
+
 
 
     public String getTitle() {

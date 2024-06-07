@@ -60,18 +60,10 @@ public class LibraryDatabase {
         return false;
     }
 
-    public void addBook(String username, int id, Book book) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(username) && users.get(i).getLibraryId() == id) {
-                users.get(i).addBook(book);
-                break;
-            }
-        }
-    }
 
     public void removeRequest(String title) {
         for (int i = 0; i < requestedbooks.size(); i++) {
-            if (requestedbooks.get(i).getTitle().equals(title)) {
+            if (requestedbooks.get(i).getTitle().equalsIgnoreCase(title)) {
                 requestedbooks.remove(i);
             }
         }
@@ -95,6 +87,10 @@ public class LibraryDatabase {
     }
     public ArrayList<Book> getBooks() {
         return books;
+    }
+
+    public ArrayList<Book> getRequestedBooks() {
+        return requestedbooks;
     }
 
 }

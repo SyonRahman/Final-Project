@@ -4,10 +4,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -26,38 +25,35 @@ public class Library extends JFrame implements ActionListener {
     LibraryDatabase database = new LibraryDatabase();
 
     public Library(String test) {
-        librarymusic();
-        UIManager.put("OptionPane.messageFont", new Font("Calibri", Font.BOLD, 18)); // Set font
-        UIManager.put("OptionPane.messageForeground", Color.RED); // Set font color
-        UIManager.put("OptionPane.buttonFont", new Font("Calibri", Font.BOLD, 18)); // Set button font
-        UIManager.put("OptionPane.background", Color.BLUE.brighter()); // Set background color
-        UIManager.put("Panel.background", new Color(149, 234, 222)); // Set panel background color
+        UIManager.put("OptionPane.messageFont", new Font("Calibri", Font.BOLD, 18));
+        UIManager.put("OptionPane.messageForeground", Color.RED);
+        UIManager.put("OptionPane.buttonFont", new Font("Calibri", Font.BOLD, 18));
+        UIManager.put("OptionPane.background", Color.BLUE.brighter());
+        UIManager.put("Panel.background", new Color(149, 234, 222));
+        mainPage();
         AdminMenu(new Admin("test", 123456789, "test", "test"));
         UserMenu(new User("test", 123456789, "test", "test"));
     }
 
-    public Library() {
-        createComponents();
-    }
+//    public void librarymusic() {
+//        try {
+//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("LibraryMusic.wav").getAbsoluteFile());
+//            Clip clip = AudioSystem.getClip();
+//            clip.open(audioInputStream);
+//            clip.start();
+//        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+//            System.out.println("Error with playing sound.");
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void librarymusic() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("LibraryMusic.wav").getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
-    }
-
-    public void createComponents() {
+    public void mainPage() {
+        titlescreen.getContentPane().removeAll();
+        titlescreen.setLayout(null);
         titlescreen.setSize(800, 550);
         titlescreen.setLocationRelativeTo(null);
         titlescreen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         titlescreen.setResizable(false);
-        titlescreen.setVisible(true);
 
 
         JPanel leftside = new JPanel();
@@ -68,7 +64,7 @@ public class Library extends JFrame implements ActionListener {
 
 
         JPanel information = new JPanel();
-        information.setBackground(Color.WHITE);
+        information.setBackground(Color.BLUE);
         information.setBounds(400, 0, 400, 550);
         information.setLayout(null);
         titlescreen.add(information);
@@ -98,7 +94,7 @@ public class Library extends JFrame implements ActionListener {
         leftside.add(cartoonimage);
 
         JButton createAccount = new JButton("Create Account");
-        createAccount.setBounds(450, 100, 300, 75);
+        createAccount.setBounds(50, 100, 300, 75);
         createAccount.setFont(new Font("Calibri", Font.BOLD, 20));
         createAccount.setBackground(Color.GREEN);
         createAccount.setForeground(Color.BLACK);
@@ -108,7 +104,7 @@ public class Library extends JFrame implements ActionListener {
         information.add(createAccount);
 
         JButton LogIn = new JButton("Log In");
-        LogIn.setBounds(450, 300, 300, 75);
+        LogIn.setBounds(50, 300, 300, 75);
         LogIn.setFont(new Font("Calibri", Font.BOLD, 20));
         LogIn.setBackground(Color.GREEN);
         LogIn.setForeground(Color.BLACK);
@@ -120,6 +116,7 @@ public class Library extends JFrame implements ActionListener {
 
         titlescreen.revalidate();
         titlescreen.repaint();
+        titlescreen.setVisible(true);
 
 
     }
@@ -240,18 +237,32 @@ public class Library extends JFrame implements ActionListener {
                             return;
                         }
                         database.createAccount(username.getText(), true, first.getText(), last.getText());
-                        JOptionPane.showMessageDialog(null, "Admin account created " +
+                        JTextArea admininfo = new JTextArea("Admin account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
-                        logAccount();
+                        System.out.println("Admin account created " +
+                                "Your username is " + username.getText() + " and your ID is " + database.getAdmins().get(database.getAdmins().size() - 1).getLibraryid());
+                        admininfo.setFont(new Font("Calibri", Font.BOLD, 20));
+                        admininfo.setForeground(Color.RED);
+                        admininfo.setBackground(new Color(149, 234, 222));
+                        admininfo.setEditable(false);
+                        JOptionPane.showMessageDialog(null, admininfo);
+                        mainPage();
                     } else {
                         if (database.isUsernamevalid(username.getText(), false)) {
                             JOptionPane.showMessageDialog(null, "Username already exists");
                             return;
                         }
                         database.createAccount(username.getText(), false, first.getText(), last.getText());
-                        JOptionPane.showMessageDialog(null, "User account created " +
+                        JTextArea userinfo = new JTextArea("User account created " +
                                 "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
-                        logAccount();
+                        System.out.println("User account created " +
+                                "Your username is " + username.getText() + " and your ID is " + database.getUsers().get(database.getUsers().size() - 1).getLibraryId());
+                        userinfo.setFont(new Font("Calibri", Font.BOLD, 20));
+                        userinfo.setForeground(Color.RED);
+                        userinfo.setBackground(new Color(149, 234, 222));
+                        userinfo.setEditable(false);
+                        JOptionPane.showMessageDialog(null, userinfo);
+                        mainPage();
 
                     }
                 }
@@ -415,8 +426,8 @@ public class Library extends JFrame implements ActionListener {
         AdminMenu.setResizable(false);
 
         JLabel title = new JLabel("Welcome Admin " + admin.getUsername());
-        title.setBounds(375, 25, 500, 100);
-        title.setFont(new Font("Calibri", Font.BOLD, 33));
+        title.setBounds(365, 25, 500, 100);
+        title.setFont(new Font("Calibri", Font.BOLD, 35));
         title.setForeground(Color.BLACK);
         AdminMenu.add(title);
 
@@ -454,6 +465,10 @@ public class Library extends JFrame implements ActionListener {
                 String newUsername = JOptionPane.showInputDialog(null, "Enter new username");
                 if (newUsername.length() < 5) {
                     JOptionPane.showMessageDialog(null, "Username must be at least 5 characters long", "Invalid Username", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (database.isUsernamevalid(newUsername, true)) {
+                    JOptionPane.showMessageDialog(null, "Username already exists", "Invalid Username", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to change your username to " + newUsername + "?", "Confirmation", JOptionPane.YES_NO_OPTION);
@@ -502,7 +517,7 @@ public class Library extends JFrame implements ActionListener {
                     admin.setDescription("No description added");
                 }
                 JLabel description = new JLabel("Description: " + admin.getDescription());
-                description.setBounds(150, 300, 200, 200);
+                description.setBounds(150, 300, 300, 200);
                 description.setFont(new Font("Calibri", Font.BOLD, 20));
                 description.setForeground(Color.BLACK);
                 profile.add(description);
@@ -515,7 +530,7 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AdminMenu.dispose();
-                createComponents();
+                mainPage();
             }
         });
         menu.setBorderPainted(true);
@@ -570,8 +585,8 @@ public class Library extends JFrame implements ActionListener {
                 String genre = JOptionPane.showInputDialog(null, "Enter the genre of the book");
                 try {
                     publication[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the year of publication"));
-                    if (publication[0] > 2024) {
-                        JOptionPane.showMessageDialog(null, "Year of publication cannot be in the future", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    if (publication[0] < 0 || publication[0] > 2024) {
+                        JOptionPane.showMessageDialog(null, "Year of publication must be a valid year", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 } catch (NumberFormatException ex) {
@@ -645,7 +660,7 @@ public class Library extends JFrame implements ActionListener {
         inventory.setResizable(false);
 
         JLabel title = new JLabel("Book Inventory");
-        title.setBounds(375, 25, 500, 100);
+        title.setBounds(365, 25, 500, 100);
         title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         inventory.add(title);
@@ -716,7 +731,7 @@ public class Library extends JFrame implements ActionListener {
         requestedBooks.setResizable(false);
 
         JLabel title = new JLabel("Requested Books");
-        title.setBounds(375, 25, 500, 100);
+        title.setBounds(365, 25, 500, 100);
         title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
 
@@ -730,17 +745,20 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
-                Object[][] data = new Object[database.getBooks().size()][7];
-                for (int i = 0; i < database.getBooks().size(); i++) {
-                    data[i][0] = database.getBooks().get(i).getTitle();
-                    data[i][1] = database.getBooks().get(i).getAuthor();
-                    data[i][2] = database.getBooks().get(i).getCopies();
-                    data[i][3] = database.getBooks().get(i).getPages();
-                    data[i][4] = database.getBooks().get(i).getGenre();
-                    data[i][5] = database.getBooks().get(i).getYearofpublication();
-                    data[i][6] = database.getBooks().get(i).getDescription();
+                DefaultTableModel model = new DefaultTableModel(columns, 0);
+                for (int i = 0; i < database.getRequestedBooks().size(); i++) {
+                    Object[] data = new Object[7];
+                    data[0] = database.getRequestedBooks().get(i).getTitle();
+                    data[1] = database.getRequestedBooks().get(i).getAuthor();
+                    data[2] = database.getRequestedBooks().get(i).getCopies();
+                    data[3] = database.getRequestedBooks().get(i).getPages();
+                    data[4] = database.getRequestedBooks().get(i).getGenre();
+                    data[5] = database.getRequestedBooks().get(i).getYearofpublication();
+                    data[6] = database.getRequestedBooks().get(i).getDescription();
+                    model.addRow(data);
                 }
-                JTable requestedtable = new JTable(data, columns);
+
+                JTable requestedtable = new JTable(model);
                 requestedtable.setFont(new Font("Calibri", Font.BOLD, 20));
                 requestedtable.setRowHeight(30);
                 requestedtable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -774,15 +792,26 @@ public class Library extends JFrame implements ActionListener {
                             database.removeRequest(requestedtable.getValueAt(row, 0).toString());
                             DefaultTableModel model = (DefaultTableModel) requestedtable.getModel();
                             model.removeRow(row);
+                            model.fireTableDataChanged();
                         } else {
                             JOptionPane.showMessageDialog(null, "Request denied");
                         }
                     }
                 });
                 requestedBooks.add(title);
-                JScrollPane scrollPane = new JScrollPane(requestedtable);
-                scrollPane.setBounds(100, 100, 800, 500);
-                requestedBooks.add(scrollPane);
+                if (libraryPane != null) {
+                    requestedBooks.remove(libraryPane);
+                }
+                libraryPane = new JScrollPane(requestedtable);
+                libraryPane.setBounds(100, 100, 800, 500);
+                requestedBooks.add(libraryPane);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) requestedtable.getModel());
+                requestedtable.setRowSorter(sorter);
+
+                requestedBooks.revalidate();
+                requestedBooks.repaint();
+
                 requestedBooks.setVisible(true);
             }
         });
@@ -799,8 +828,8 @@ public class Library extends JFrame implements ActionListener {
         UserMenu.setResizable(false);
 
         JLabel title = new JLabel("Welcome " + "User " + user.getUsername());
-        title.setBounds(400, 25, 500, 100);
-        title.setFont(new Font("Calibri", Font.BOLD, 33));
+        title.setBounds(365, 25, 500, 125);
+        title.setFont(new Font("Calibri", Font.BOLD, 35));
         title.setForeground(Color.BLACK);
         UserMenu.add(title);
 
@@ -808,12 +837,13 @@ public class Library extends JFrame implements ActionListener {
         menu.setBackground(Color.BLUE);
         JMenu options = new JMenu("Settings");
         menu.add(options);
+        options.setForeground(Color.BLUE);
+        JMenuItem checkprofile = new JMenuItem("Check Profile");
+        options.add(checkprofile);
         JMenuItem changeUsername = new JMenuItem("Change Username");
         options.add(changeUsername);
         JMenuItem addDescription = new JMenuItem("Add Description");
         options.add(addDescription);
-        JMenuItem checkprofile = new JMenuItem("Check Profile");
-        options.add(checkprofile);
         JMenuItem logOut = new JMenuItem("Log Out");
         options.add(logOut);
 
@@ -835,7 +865,7 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UserMenu.dispose();
-                createComponents();
+                mainPage();
             }
         });
 
@@ -848,7 +878,7 @@ public class Library extends JFrame implements ActionListener {
                     return;
                 }
                 if (database.isUsernamevalid(newUsername, false)) {
-                    JOptionPane.showMessageDialog(null, "Username already exists");
+                    JOptionPane.showMessageDialog(null, "Username already exists", "Username Change Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 user.setUsername(newUsername);
@@ -934,7 +964,7 @@ public class Library extends JFrame implements ActionListener {
         viewBooks.setBackground(Color.BLUE);
 
         JLabel title = new JLabel("Books Currently Owned");
-        title.setBounds(350, 25, 500, 50);
+        title.setBounds(365, 25, 500, 50);
         title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         displayBooks.add(title);
@@ -943,17 +973,19 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String column[] = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
-                Object[][] data = new Object[user.getBooksowned().size()][7];
+                DefaultTableModel model = new DefaultTableModel(column, 0);
                 for (int i = 0; i < user.getBooksowned().size(); i++) {
-                    data[i][0] = user.getBooksowned().get(i).getTitle();
-                    data[i][1] = user.getBooksowned().get(i).getAuthor();
-                    data[i][2] = user.getBooksowned().get(i).getCopies();
-                    data[i][3] = user.getBooksowned().get(i).getPages();
-                    data[i][4] = user.getBooksowned().get(i).getGenre();
-                    data[i][5] = user.getBooksowned().get(i).getYearofpublication();
-                    data[i][6] = user.getBooksowned().get(i).getDescription();
+                    Object[] data = new Object[7];
+                    data[0] = user.getBooksowned().get(i).getTitle();
+                    data[1] = user.getBooksowned().get(i).getAuthor();
+                    data[2] = user.getBooksowned().get(i).getCopies();
+                    data[3] = user.getBooksowned().get(i).getPages();
+                    data[4] = user.getBooksowned().get(i).getGenre();
+                    data[5] = user.getBooksowned().get(i).getYearofpublication();
+                    data[6] = user.getBooksowned().get(i).getDescription();
+                    model.addRow(data);
                 }
-                JTable inventorybooks = new JTable(data, column);
+                JTable inventorybooks = new JTable(model);
                 inventorybooks.setFont(new Font("Calibri", Font.BOLD, 20));
                 inventorybooks.setRowHeight(30);
                 inventorybooks.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -982,9 +1014,19 @@ public class Library extends JFrame implements ActionListener {
                         }
                     }
                 });
-                JScrollPane scrollPane = new JScrollPane(inventorybooks);
-                scrollPane.setBounds(100, 100, 800, 500);
-                displayBooks.add(scrollPane);
+                if (libraryPane != null) {
+                    displayBooks.remove(libraryPane);
+                }
+                libraryPane = new JScrollPane(inventorybooks);
+                libraryPane.setBounds(100, 100, 800, 500);
+                displayBooks.add(libraryPane);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) inventorybooks.getModel());
+                inventorybooks.setRowSorter(sorter);
+
+                displayBooks.revalidate();
+                displayBooks.repaint();
+
                 displayBooks.setVisible(true);
             }
         });
@@ -1001,7 +1043,7 @@ public class Library extends JFrame implements ActionListener {
         borrowBooks.setResizable(false);
 
         JLabel title = new JLabel("Book Inventory");
-        title.setBounds(350, 25, 500, 50);
+        title.setBounds(365, 25, 500, 50);
         title.setFont(new Font("Calibri", Font.BOLD, 33));
         title.setForeground(Color.BLACK);
         borrowBooks.add(title);
@@ -1017,22 +1059,30 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
-                Object[][] data = new Object[database.getBooks().size()][7];
+                DefaultTableModel model = new DefaultTableModel(columns, 0);
                 for (int i = 0; i < database.getBooks().size(); i++) {
-                    data[i][0] = database.getBooks().get(i).getTitle();
-                    data[i][1] = database.getBooks().get(i).getAuthor();
-                    data[i][2] = database.getBooks().get(i).getCopies();
-                    data[i][3] = database.getBooks().get(i).getPages();
-                    data[i][4] = database.getBooks().get(i).getGenre();
-                    data[i][5] = database.getBooks().get(i).getYearofpublication();
-                    data[i][6] = database.getBooks().get(i).getDescription();
+                    Object[] data = new Object[7];
+                    data[0] = database.getBooks().get(i).getTitle();
+                    data[1] = database.getBooks().get(i).getAuthor();
+                    data[2] = database.getBooks().get(i).getCopies();
+                    data[3] = database.getBooks().get(i).getPages();
+                    data[4] = database.getBooks().get(i).getGenre();
+                    data[5] = database.getBooks().get(i).getYearofpublication();
+                    data[6] = database.getBooks().get(i).getDescription();
+                    model.addRow(data);
                 }
-                JTable table = new JTable(data, columns);
+                JTable table = new JTable(model);
+                table.setFont(new Font("Calibri", Font.BOLD, 20));
+                table.setRowHeight(30);
                 table.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         int row = table.rowAtPoint(evt.getPoint());
                         int col = table.columnAtPoint(evt.getPoint());
+                        if ((int)table.getValueAt(row, 2) == 0) {
+                            JOptionPane.showMessageDialog(null, "No copies available");
+                            return;
+                        }
                         if (row >= 0 && col >= 0) {
                             JOptionPane.showMessageDialog(null, "Title: " + table.getValueAt(row, 0) +
                                     "\nAuthor: " + table.getValueAt(row, 1) +
@@ -1042,25 +1092,41 @@ public class Library extends JFrame implements ActionListener {
                                     "\nYear of Publication: " + table.getValueAt(row, 5) +
                                     "\nDescription: " + table.getValueAt(row, 6));
                         }
+                        for (int i = 0; i < user.getBooksowned().size(); i++) {
+                            if (user.getBooksowned().get(i).getTitle().equals(table.getValueAt(row, 0).toString())) {
+                                JOptionPane.showMessageDialog(null, "You already own this book");
+                                return;
+                            }
+                        }
                         int choice = JOptionPane.showConfirmDialog(null, "Do you want to borrow this book?", "Confirmation", JOptionPane.YES_NO_OPTION);
                         if (choice == JOptionPane.YES_OPTION) {
                             JOptionPane.showMessageDialog(null, "Book borrowed");
-                            user.addBook(new Book(table.getValueAt(row, 0).toString(), table.getValueAt(row, 1).toString(), (int) table.getValueAt(row, 2), (int) table.getValueAt(row, 3),
+                            user.addBook(new Book(table.getValueAt(row, 0).toString(), table.getValueAt(row, 1).toString(), 1, (int) table.getValueAt(row, 3),
                                     table.getValueAt(row, 4).toString(), (int) table.getValueAt(row, 5), table.getValueAt(row, 6).toString()));
-                            database.removeBookfromLibrary(row);
                             for (int i = 0; i < database.getBooks().size(); i++) {
                                 if (database.getBooks().get(i).getTitle().equals(table.getValueAt(row, 0).toString())) {
                                     database.getBooks().get(i).changeCopies();
                                 }
                             }
+                            model.fireTableDataChanged();
                         } else {
                             JOptionPane.showMessageDialog(null, "Book not borrowed");
                         }
                     }
                 });
-                JScrollPane scrollPane = new JScrollPane(table);
-                scrollPane.setBounds(100, 100, 800, 500);
-                borrowBooks.add(scrollPane);
+                if (libraryPane != null) {
+                    borrowBooks.remove(libraryPane);
+                }
+                libraryPane = new JScrollPane(table);
+                libraryPane.setBounds(100, 100, 800, 500);
+                borrowBooks.add(libraryPane);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+                table.setRowSorter(sorter);
+
+                borrowBooks.revalidate();
+                borrowBooks.repaint();
+
                 borrowBooks.setVisible(true);
             }
         });
@@ -1068,7 +1134,6 @@ public class Library extends JFrame implements ActionListener {
     }
 
     public void requestbook(User user) {
-        final int[] copies = new int[1];
         final int[] pages = new int[1];
         final int[] year = new int[1];
         JButton requestBook = new JButton("Request Book");
@@ -1082,7 +1147,6 @@ public class Library extends JFrame implements ActionListener {
                 String request = JOptionPane.showInputDialog(null, "Enter the title of the book you wish to request");
                 String author = JOptionPane.showInputDialog(null, "Enter the author of the book you wish to request");
                 try {
-                    copies[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of copies you wish to request"));
                     pages[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of pages of the book you wish to request"));
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Copies and pages must be valid numbers", "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -1090,6 +1154,10 @@ public class Library extends JFrame implements ActionListener {
                 }
                 String genre = JOptionPane.showInputDialog(null, "Enter the genre of the book you wish to request");
                 try {
+                    if (year[0] < 0 || year[0] > 2024) {
+                        JOptionPane.showMessageDialog(null, "Year of publication must be a valid year", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     year[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the year of publication of the book you wish to request"));
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Year of publication must be a valid number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -1099,7 +1167,6 @@ public class Library extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Here is all the information: " +
                         "\nBook Name: " + request +
                         "\nAuthor: " + author +
-                        "\nCopies: " + copies[0] +
                         "\nPages: " + pages[0] +
                         "\nGenre: " + genre +
                         "\nYear of Publication: " + year[0] +
@@ -1110,7 +1177,7 @@ public class Library extends JFrame implements ActionListener {
                     return;
                 } else {
                     JOptionPane.showMessageDialog(null, "Book requested");
-                    database.addRequest(new Book(request, author, copies[0], pages[0], genre, year[0], description));
+                    database.addRequest(new Book(request, author, 1, pages[0], genre, year[0], description));
                 }
             }
         });
@@ -1142,17 +1209,19 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] columns = {"Title", "Author", "Copies", "Pages", "Genre", "Year of Publication", "Description"};
-                Object[][] data = new Object[user.getBooksowned().size()][7];
+                DefaultTableModel model = new DefaultTableModel(columns, 0);
                 for (int i = 0; i < user.getBooksowned().size(); i++) {
-                    data[i][0] = user.getBooksowned().get(i).getTitle();
-                    data[i][1] = user.getBooksowned().get(i).getAuthor();
-                    data[i][2] = user.getBooksowned().get(i).getCopies();
-                    data[i][3] = user.getBooksowned().get(i).getPages();
-                    data[i][4] = user.getBooksowned().get(i).getGenre();
-                    data[i][5] = user.getBooksowned().get(i).getYearofpublication();
-                    data[i][6] = user.getBooksowned().get(i).getDescription();
+                    Object[] data = new Object[7];
+                    data[0] = user.getBooksowned().get(i).getTitle();
+                    data[1] = user.getBooksowned().get(i).getAuthor();
+                    data[2] = user.getBooksowned().get(i).getCopies();
+                    data[3] = user.getBooksowned().get(i).getPages();
+                    data[4] = user.getBooksowned().get(i).getGenre();
+                    data[5] = user.getBooksowned().get(i).getYearofpublication();
+                    data[6] = user.getBooksowned().get(i).getDescription();
+                    model.addRow(data);
                 }
-                JTable returntable = new JTable(data, columns);
+                JTable returntable = new JTable(model);
                 returntable.setFont(new Font("Calibri", Font.BOLD, 20));
                 returntable.setRowHeight(30);
                 returntable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -1181,19 +1250,33 @@ public class Library extends JFrame implements ActionListener {
                         int choice = JOptionPane.showConfirmDialog(null, "Do you want to return this book?", "Confirmation", JOptionPane.YES_NO_OPTION);
                         if (choice == JOptionPane.YES_OPTION) {
                             JOptionPane.showMessageDialog(null, "Book returned");
-                            database.addBooktoLibrary(returntable.getValueAt(row, 0).toString(), returntable.getValueAt(row, 1).toString(), (int) returntable.getValueAt(row, 2), (int) returntable.getValueAt(row, 3),
-                                    returntable.getValueAt(row, 4).toString(), (int) returntable.getValueAt(row, 5), returntable.getValueAt(row, 6).toString());
+                            for (int i = 0; i < database.getBooks().size(); i++) {
+                                if (database.getBooks().get(i).getTitle().equals(returntable.getValueAt(row, 0).toString())) {
+                                    database.getBooks().get(i).addCopies();
+                                }
+                            }
                             user.removeBook(returntable.getValueAt(row, 0).toString());
                             DefaultTableModel model = (DefaultTableModel) returntable.getModel();
                             model.removeRow(row);
+                            model.fireTableDataChanged();
                         } else {
                             JOptionPane.showMessageDialog(null, "Book not returned");
                         }
                     }
                 });
-                JScrollPane scrollPane = new JScrollPane(returntable);
-                scrollPane.setBounds(100, 100, 800, 500);
-                returnBooks.add(scrollPane);
+                if (libraryPane != null) {
+                    returnBooks.remove(libraryPane);
+                }
+                libraryPane = new JScrollPane(returntable);
+                libraryPane.setBounds(100, 100, 800, 500);
+                returnBooks.add(libraryPane);
+
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) returntable.getModel());
+                returntable.setRowSorter(sorter);
+
+                returnBooks.revalidate();
+                returnBooks.repaint();
+
                 returnBooks.setVisible(true);
             }
         });

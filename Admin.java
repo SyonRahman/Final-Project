@@ -22,10 +22,6 @@ public class Admin {
         this.username = username;
     }
 
-    public void acceptRequest() {
-
-    }
-
     public String getUsername() {
         return username;
     }
