@@ -20,7 +20,7 @@ public class Library extends JFrame implements ActionListener {
     private JFrame UserMenu = new JFrame("User Menu");
     private User libraryuser;
     private Admin libraryadmin;
-    private JScrollPane libraryPane;
+    private JScrollPane libraryPane, requestedPane;
 
     LibraryDatabase database = new LibraryDatabase();
 
@@ -31,8 +31,8 @@ public class Library extends JFrame implements ActionListener {
         UIManager.put("OptionPane.background", Color.BLUE.brighter());
         UIManager.put("Panel.background", new Color(149, 234, 222));
         mainPage();
-        AdminMenu(new Admin("test", 123456789, "test", "test"));
-        UserMenu(new User("test", 123456789, "test", "test"));
+        //AdminMenu(new Admin("test", 123456789, "test", "test")); Admin Menu Test
+        //UserMenu(new User("test", 123456789, "test", "test")); User Menu Test
     }
 
 //    public void librarymusic() {
@@ -799,12 +799,12 @@ public class Library extends JFrame implements ActionListener {
                     }
                 });
                 requestedBooks.add(title);
-                if (libraryPane != null) {
-                    requestedBooks.remove(libraryPane);
+                if (requestedPane != null) {
+                    requestedBooks.remove(requestedPane);
                 }
-                libraryPane = new JScrollPane(requestedtable);
-                libraryPane.setBounds(100, 100, 800, 500);
-                requestedBooks.add(libraryPane);
+                requestedPane = new JScrollPane(requestedtable);
+                requestedPane.setBounds(100, 100, 800, 500);
+                requestedBooks.add(requestedPane);
 
                 TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) requestedtable.getModel());
                 requestedtable.setRowSorter(sorter);
@@ -837,7 +837,7 @@ public class Library extends JFrame implements ActionListener {
         menu.setBackground(Color.BLUE);
         JMenu options = new JMenu("Settings");
         menu.add(options);
-        options.setForeground(Color.BLUE);
+        options.setForeground(Color.GREEN);
         JMenuItem checkprofile = new JMenuItem("Check Profile");
         options.add(checkprofile);
         JMenuItem changeUsername = new JMenuItem("Change Username");
@@ -1172,7 +1172,7 @@ public class Library extends JFrame implements ActionListener {
                         "\nYear of Publication: " + year[0] +
                         "\nDescription: " + description);
                 int choice = JOptionPane.showConfirmDialog(null, "Do you want to request this book?", "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (choice == JOptionPane.NO_OPTION) {
+                if (choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION) {
                     JOptionPane.showMessageDialog(null, "Book request cancelled");
                     return;
                 } else {
