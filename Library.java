@@ -20,7 +20,7 @@ public class Library extends JFrame implements ActionListener {
     private JFrame UserMenu = new JFrame("User Menu");
     private User libraryuser;
     private Admin libraryadmin;
-    private JScrollPane libraryPane, requestedPane;
+    private JScrollPane libraryPane, requestedPane, viewPane;
 
     LibraryDatabase database = new LibraryDatabase();
 
@@ -563,6 +563,10 @@ public class Library extends JFrame implements ActionListener {
                     return;
                 }
                 String bookname = JOptionPane.showInputDialog(null, "Enter the name of the book");
+                if (bookname.isEmpty()) {
+JOptionPane.showMessageDialog(null, "Book name cannot be empty", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 for (int i = 0; i < database.getBooks().size(); i++) {
                     if (database.getBooks().get(i).getTitle().equalsIgnoreCase(bookname)) {
                         JOptionPane.showMessageDialog(null, "Book has already been added to library", "Book already added!", JOptionPane.ERROR_MESSAGE);
@@ -570,6 +574,10 @@ public class Library extends JFrame implements ActionListener {
                     }
                 }
                 String author = JOptionPane.showInputDialog(null, "Enter the name of the author");
+                if (author.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Author name cannot be empty", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 try {
                     copies[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of copies"));
                 } catch (NumberFormatException ex) {
@@ -1014,12 +1022,12 @@ public class Library extends JFrame implements ActionListener {
                         }
                     }
                 });
-                if (libraryPane != null) {
-                    displayBooks.remove(libraryPane);
+                if (viewPane != null) {
+                    displayBooks.remove(viewPane);
                 }
-                libraryPane = new JScrollPane(inventorybooks);
-                libraryPane.setBounds(100, 100, 800, 500);
-                displayBooks.add(libraryPane);
+                viewPane = new JScrollPane(inventorybooks);
+                viewPane.setBounds(100, 100, 800, 500);
+                displayBooks.add(viewPane);
 
                 TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) inventorybooks.getModel());
                 inventorybooks.setRowSorter(sorter);
@@ -1145,7 +1153,15 @@ public class Library extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String request = JOptionPane.showInputDialog(null, "Enter the title of the book you wish to request");
+                if (request.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Title cannot be empty", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String author = JOptionPane.showInputDialog(null, "Enter the author of the book you wish to request");
+                if (author.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Author cannot be empty", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 try {
                     pages[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the amount of pages of the book you wish to request"));
                 } catch (NumberFormatException ex) {
